@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CleanBan - your simple Kanban Solution</title>
+    <link rel="stylesheet" href="./src/style.css" type="text/css"
+</head>
+<body>
+    <div class="header">
+        <input id="board-name" name="board-name" placeholder="Enter Your Board Name"></input>
+        <button id="create-issue" type="button">Create Issue</button>
+        </div>
+    <div class="container">
+        <div id="todo-board" class="board">
+            <h1 class="board-title">TODO</h1>
+            <div class="items">
+                <div draggable="true" class="issue-item">
+                    <span>P1</span>
+                    <span>Create Kanban</span>
+                    <span>Due Date : 03/05/25</span>
+                </div>
+                <div draggable="true" class="issue-item">
+                    <span>P2</span>
+                    <span>Create Kanban 2</span>
+                    <span>Due Date : 03/05/25</span>
+                </div>
+            </div>
+
+        </div>
+        <div id="inprogress-board" class="board"><h1>IN-PROGRESS</h1></div>
+        <div id="completed-board" class="board"><h1>COMPLETED</h1></div>
+        <div id="adhoc-board" class="board"><button id="btn-addboard">+</button></div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+<script src="src/script.js"></script>
+</body>
+</html>
