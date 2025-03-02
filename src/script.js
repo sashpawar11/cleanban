@@ -108,8 +108,23 @@ function createNewBoard() {
     boardsContainer.appendChild(adhocBoard);
 }
 function loadLocales() {
+    
     const boardname = localStorage.getItem('board-name');
     if (boardname) {
         kanbanBoardName.value = boardname;
     }
+
+
 }
+
+
+// // boardObj
+// board {
+//     boardName:
+//     items: [{
+//         issueName:
+//         priority :
+//         estdDueDate:
+//         label:
+//     }, {}, {}]
+// }
