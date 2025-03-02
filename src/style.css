@@ -4,7 +4,9 @@
     box-sizing: border-box;
     border: 0;
 }
-
+body {
+    font-family: 'Poppins';
+}
 .header {
     margin-top: 20px;
     padding: 0px 20px;
@@ -35,4 +37,24 @@ input[id=board-name]{
     border: 1px solid grey;
     margin-top: 10px;
     cursor: pointer;
+}
+
+#adhoc-board {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: red;
+    margin-top: 50px;
+    margin-left: 10px;
+    border : 1px solid black;
+    padding: 20px 10px;
+    height: 80vh;
+    width:  400px;
+    border-radius: 5px;
+}
+
+#btn-addboard {
+    height: 50px;
+    width: 50px;
+    border-radius: 20%;
 }
