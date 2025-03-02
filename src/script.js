@@ -9,6 +9,8 @@ const issueItems = document.querySelectorAll('.issue-item')
 const kanbanBoardName = document.getElementById('board-name');
 const btnCreateIssue = document.getElementById('create-issue');
 const btnCreateBoard = document.getElementById('btn-addboard');
+const createIssueModal = document.getElementById("createIssueModal");
+const btncreateIssueModalClose = document.getElementById("closeCreateIssueModalButton");
 
 
 loadLocales();
@@ -16,10 +18,6 @@ loadLocales();
 
 /// EVENT HANDLERS ///////////
 
-btnCreateIssue.addEventListener('click', () => {
-    const issueName = prompt("Enter Issue Name:");
-    createNewIssue(issueName);
-})
 kanbanBoardName.addEventListener('input', () => {
     localStorage.setItem('board-name', kanbanBoardName.value);
 })
@@ -31,12 +29,35 @@ boards.forEach((board) => {
         const issueItem = document.querySelector('.flying');
         board.appendChild(issueItem);
     })
+    board.addEventListener('dragenter', () => {
+        board.classList.add('board-drag-active');
+    })
+    board.addEventListener('dragleave', () => {
+        board.classList.remove('board-drag-active');
+    })
 })
 
 
 btnCreateBoard.addEventListener('click', () => {
     createNewBoard();
 })
+
+// When the user clicks on the button, open the modal
+btnCreateIssue.onclick = function() {
+    createIssueModal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+btncreateIssueModalClose.onclick = function() {
+    createIssueModal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+    if (event.target == createIssueModal) {
+        modal.style.display = "none";
+    }
+}
 
 /// FUNCTIONS ///////////
 

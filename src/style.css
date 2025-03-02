@@ -5,14 +5,93 @@
     border: 0;
 }
 body {
-    font-family: 'Poppins';
+    font-family: 'Montserrat';
+    background-color: white;
+    overflow: auto;
 }
+
 .header {
-    margin-top: 20px;
-    padding: 0px 20px;
+    display: flex;
+    flex-direction: row;
+    padding: 5px 20px;
+    background-color: #000000;
 }
+
+
+#create-issue{
+  margin: 10px;
+  padding: 10px 30px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  border-radius: 10px;
+  display: block;
+  border: 0px;
+  font-weight: 700;
+  box-shadow: 0px 0px 14px -7px #f09819;
+  background-image: linear-gradient(45deg, #FF512F 0%, #F09819  51%, #FF512F  100%);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+#create-issue:hover {
+  background-position: right center;
+  /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
+
+#create-issue:active {
+  transform: scale(0.95);
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    height: 40vh;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+
 input[id=board-name]{
     font-size: 2rem;
+    background-color: black;
+    color: white;
 }
 .container {
     display: flex;
@@ -22,23 +101,75 @@ input[id=board-name]{
 
     margin-top: 50px;
     margin-left: 10px;
-    border : 1px solid black;
+    border : 1px solid #e4e4e4;
     padding: 20px 10px;
     height: 80vh;
     width:  400px;
     border-radius: 5px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    background-color: white;
 
 }
 
+.board-title {
+    font-size: 2em;
+    color: black;
+    font-weight: bold;
+}
+
+.board-drag-active {
+    border: 1px dashed rgb(0, 119, 255);
+    background-color: rgba(185, 185, 185, 0.226);
+}
 .issue-item {
     display: flex;
     flex-direction: column;
-    padding: 20px;
-    border: 1px solid grey;
+    border: 1px solid #e4e4e4;
+    border-radius: 10px;
     margin-top: 10px;
     cursor: pointer;
 }
 
+.issue-content {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 5px;
+}
+
+.issue-title {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.issue-date {
+    font-size: 0.7em;
+}
+.issue-label {
+    font-size: 0.8em;
+    background-color: rgb(235, 235, 235);
+    color: blueviolet;
+    padding: 0px 5px;
+    width: fit-content;
+    border-radius: 2px;
+}
+.priority{
+    background-color: black;
+    width: 100% !important;
+    height: 3px;
+}
+
+.p1 {
+    background-color: rgb(226, 28, 28);
+}
+
+.p2 {
+    background-color: rgb(231, 160, 28);
+}
+
+.p3 {
+    background-color: rgb(49, 151, 235);
+}
 #adhoc-board {
     display: flex;
     justify-content: center;
@@ -46,11 +177,13 @@ input[id=board-name]{
     background-color: red;
     margin-top: 50px;
     margin-left: 10px;
-    border : 1px solid black;
+    border : 1px solid #e4e4e4;
     padding: 20px 10px;
     height: 80vh;
     width:  400px;
     border-radius: 5px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    background-color: rgb(199, 199, 199);
 }
 
 #btn-addboard {
