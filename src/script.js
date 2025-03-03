@@ -11,7 +11,9 @@ const btnCreateIssue = document.getElementById('create-issue');
 const btnCreateBoard = document.getElementById('btn-addboard');
 const createIssueModal = document.getElementById("createIssueModal");
 const btncreateIssueModalClose = document.getElementById("closeCreateIssueModalButton");
-
+const btncreateIssueModalSubmit = document.getElementById("btnSubmitCRIssue");
+const todoItems = document.getElementById('todo-items');
+const colorPickerBoard = document.querySelectorAll('.board-color-picker');
 
 loadLocales();
 
@@ -37,6 +39,20 @@ boards.forEach((board) => {
     })
 })
 
+colorPickerBoard.forEach((picker) => {
+    picker.addEventListener('input', updateBoardColor);
+    // picker.addEventListener('input', () => {
+    //     console.log('inputted');
+    // });
+
+    picker.addEventListener('change', updateBoardColor);
+
+    // picker.addEventListener('change', () => {
+    //     console.log('changed');
+    // });
+
+})
+
 
 btnCreateBoard.addEventListener('click', () => {
     createNewBoard();
@@ -52,12 +68,17 @@ btncreateIssueModalClose.onclick = function() {
     createIssueModal.style.display = "none";
 }
 
+btncreateIssueModalSubmit.onclick = function() {
+    createNewIssue();
+}
+
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
     if (event.target == createIssueModal) {
         modal.style.display = "none";
     }
 }
+
 
 /// FUNCTIONS ///////////
 
@@ -72,23 +93,66 @@ function attachDragHandlers(target) {
 
 }
 
-function createNewIssue(issueName) {
+function createNewIssue() {
+
+    // Inputs
+    const crIssueName = document.getElementById('cr-issue-name').value;
+    const crIssueP1 = document.getElementById('p1radio').checked;
+    const crIssueP2 = document.getElementById('p1radio').checked;
+    const crIssueP3 = document.getElementById('p1radio').checked;
+    const crIssueDate = document.getElementById('cr-issue-date').value;
+    // let crIssueDateFormatted = new Date(crIssueDate);
+    // crIssueDateFormatted = crIssueDateFormatted.toLocaleDateString;
+
+    const crIssueLabels = document.getElementById('cr-issue-labels').value;
+
+    if (!crIssueName || !crIssueDate || !crIssueLabels) return;
+
+    let selectedPriority = "p1";
+    if (crIssueP1) {
+        selectedPriority = "p1";
+    }
+    else if (crIssueP2) {
+        selectedPriority = "p2";
+    }
+    else if (crIssueP3) {
+        selectedPriority = "p3";
+    }
+
     const issueDiv = document.createElement('div');
     issueDiv.className = 'issue-item';
     issueDiv.setAttribute('draggable', true);
 
+ 
     const prioritySpan = document.createElement('span')
-    prioritySpan.innerText = 'P1'
+    prioritySpan.className = `priority ${selectedPriority}`
+
+    const issueContent = document.createElement('p')
+    issueContent.className = 'issue-content'
+
+    const issueLabelSpan = document.createElement('span')
+    issueLabelSpan.className = 'issue-label';
+    issueLabelSpan.innerText = crIssueLabels;
+
     const issueNameSpan = document.createElement('span')
-    issueNameSpan.innerText = issueName
+    issueNameSpan.className = 'issue-title';
+    issueNameSpan.innerText = crIssueName;
+
     const dueDateSpan = document.createElement('span')
-    dueDateSpan.innerText = 'Due Date : '
+    dueDateSpan.className = 'issue-date';
+    dueDateSpan.innerText = `Due Date : ${crIssueDate}`;
     
+    issueContent.appendChild(issueLabelSpan);
+    issueContent.appendChild(issueNameSpan);
+    issueContent.appendChild(dueDateSpan);
+
     issueDiv.appendChild(prioritySpan);
-    issueDiv.appendChild(issueNameSpan);
-    issueDiv.appendChild(dueDateSpan);
+    issueDiv.appendChild(issueContent);
     attachDragHandlers(issueDiv);
-    todoBoard.appendChild(issueDiv)
+    
+    todoItems.appendChild(issueDiv)
+    btncreateIssueModalClose.click();
+    alert('Issue Created Successfully!');
 }
 
 function createNewBoard() {
@@ -107,6 +171,20 @@ function createNewBoard() {
     boardsContainer.appendChild(boardDiv);
     boardsContainer.appendChild(adhocBoard);
 }
+
+
+
+function updateBoardColor(event) {
+    const colorSelected = event.target.value;
+    const board = event.target.parentNode.parentNode;
+    const boardTitle = board.querySelector('.board-title');
+    console.log(event.target, event.target.parentNode);
+
+    boardTitle.style.color = colorSelected;
+    board.style.borderColor = colorSelected;
+    return;
+}
+
 function loadLocales() {
     
     const boardname = localStorage.getItem('board-name');

@@ -9,29 +9,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- The Modal -->
     <div id="createIssueModal" class="modal">
-    <!-- Modal content -->
     <div class="modal-content">
       <button  id="closeCreateIssueModalButton" class="close">&times;</button>
       <div class="modal-info-container">
+        <span>
         <label>New Issue Name:</label>
-        <input name="cr-issue-name" id="cr-issue-name" type="text" placeholder="Enter Issue Name"><br>
-
-        <label>Choose Priority:</label>
-        <input name="p1radio" id="p1radio" type="radio" value="P1">
-        <label for="P1" >P1</label>
-        <input name="p2radio" id="p2radio" type="radio" value="P2">
-        <label for="P2" >P3</label>
-        <input name="p3radio" id="p3radio" type="radio" value="P3">
-        <label for="P3" >P3</label>
+        <input name="createissue-Name" id="cr-issue-name" type="text" placeholder="Enter Issue Name"><br>
+        </span>
+        <span>
+            <label>Choose Priority:</label>
+            <input name="createissue-Priority" id="p1radio" type="radio" value="P1">
+            <label for="P1" >High</label>
+            <input name="createissue-Priority" id="p2radio" type="radio" value="P2">
+            <label for="P2" >Medium</label>
+            <input name="createissue-Priority" id="p3radio" type="radio" value="P3">
+            <label for="P3" >Low</label>
+        </span>
         <br>
+
         <label>Estimated Due Date:</label>
-        <input name="cr-issue-date" id="cr-issue-name" type="date" placeholder="Add Date Here"><br>
+        <input name="cr-issue-date" id="cr-issue-date" type="date" placeholder="Add Date Here"><br>
         <label>Add Issue Label:</label>
         <input name="cr-issue-labels" id="cr-issue-labels" type="text" placeholder="Add Label Here"><br>
         <button id="btnSubmitCRIssue">Submit Issue</button>
-
       </div>
      
     </div>
@@ -43,8 +44,12 @@
         </div>
     <div class="container">
         <div id="todo-board" class="board">
-            <span class="board-title">TODO</span>
-            <div class="items">
+            <div class="board-header">
+                <span class="board-title">TODO</span>
+                <input type="color" name="board-color-picker" class="board-color-picker">
+            </div>
+           
+            <div id="todo-items" class="items">
                 <div draggable="true" class="issue-item">
                     <span class="priority p1"></span>
                     <p class="issue-content ">

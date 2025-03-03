@@ -65,15 +65,23 @@ body {
   
   /* Modal Content/Box */
   .modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
     height: 40vh;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: fit-content; 
+    font-size: 1.3em;
+    border-radius: 10px;
+    column-gap: 20px;
   }
   
-  /* The Close Button */
+#btnSubmitCRIssue {
+    width: 100%;
+}
   .close {
     color: #aaa;
     float: right;
@@ -112,11 +120,34 @@ input[id=board-name]{
 
 }
 
+.board-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+input[name=board-color-picker]{
+    border-radius: 100%;
+    width: 25px;
+}
+
+::-webkit-color-swatch-wrapper { 
+    border: none;
+    border-radius: 100%;
+    width: 25px;
+}
+::-webkit-color-swatch { 
+    border: none;
+    border-radius: 100%;
+    width: 25px;
+}
+
 .board-title {
     font-size: 2em;
     color: black;
     font-weight: bold;
 }
+
 
 .board-drag-active {
     border: 1px dashed rgb(0, 119, 255);
@@ -129,6 +160,7 @@ input[id=board-name]{
     border-radius: 10px;
     margin-top: 10px;
     cursor: pointer;
+    background-color: #f5f5f5;
 }
 
 .issue-content {
