@@ -114,7 +114,7 @@ input[id=board-name]{
 .board {
 
     margin-top: 50px;
-    margin-left: 10px;
+    margin-left: 40px;
     border : 1px solid #e4e4e4;
     padding: 20px 10px;
     height: 80vh;
@@ -149,15 +149,15 @@ input[name=board-color-picker]{
 }
 
 .board-title {
-    font-size: 2em;
+    font-size: 1.8em;
     color: black;
     font-weight: bold;
 }
 
 
 .board-drag-active {
-    border: 1px dashed rgb(0, 119, 255);
-    background-color: rgba(185, 185, 185, 0.226);
+    border: 1px dashed rgb(0, 119, 255) !important;
+    background-color: rgba(185, 185, 185, 0.226) !important;
 }
 .issue-item {
     display: flex;

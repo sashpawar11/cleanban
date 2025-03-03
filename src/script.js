@@ -16,7 +16,8 @@ class boardObj {
 
 
 class IssueObj {
-    constructor(issuePriority, issueName, issueLabel, issueDueDate) {
+    constructor(issueID, issuePriority, issueName, issueLabel, issueDueDate) {
+        this.issueID = issueID;
         this.issuePriority = issuePriority;
         this.issueName = issueName;
         this.issueLabel = issueLabel;
@@ -25,7 +26,6 @@ class IssueObj {
 }
 
 
-// PRORTOTYPES
 
 
 // INITIALIZE //
@@ -40,8 +40,7 @@ const btnCreateBoard = document.getElementById('btn-addboard');
 const createIssueModal = document.getElementById("createIssueModal");
 const btncreateIssueModalClose = document.getElementById("closeCreateIssueModalButton");
 const btncreateIssueModalSubmit = document.getElementById("btnSubmitCRIssue");
-const todoItems = document.getElementById('todo-items');
-
+const sortpriority = document.getElementById('sortpriority');
 
 let boardsData = []
 
@@ -50,19 +49,19 @@ loadLocales();
 
 // fallback/new session
 if (boardsData.length == 0) {
-    const todoBoardObj = new boardObj('todo-board', 'TODO', 'black');
-    const todoBoardObjItem = new IssueObj('P1','Create Kanban Board', 'current-sprint', '03/05/2025');
-    const todoBoardObjItem2 = new IssueObj('P2','Edit and Delete Issue', 'current-sprint', '03/05/2025')
-    const todoBoardObjItem3 = new IssueObj('P3','Sync LocalStorage', 'current-sprint', '03/05/2025');
+    const todoBoardObj = new boardObj('todo-board', 'TODO', '#1a1a1a');
+    const todoBoardObjItem = new IssueObj(Math.ceil(Math.random() * 1000000),1,'Create Kanban Board', 'current-sprint', '03/05/2025');
+    const todoBoardObjItem2 = new IssueObj(Math.ceil(Math.random() * 1000000),2,'Edit and Delete Issue', 'current-sprint', '03/05/2025')
+    const todoBoardObjItem3 = new IssueObj(Math.ceil(Math.random() * 1000000),3,'Sync LocalStorage', 'current-sprint', '03/05/2025');
     todoBoardObj.setBoardIssue(todoBoardObjItem);
     todoBoardObj.setBoardIssue(todoBoardObjItem2);
     todoBoardObj.setBoardIssue(todoBoardObjItem3);
     boardsData.push(todoBoardObj);
 
-    const inprogressBoardObj = new boardObj('inprogress-board', 'IN-PROGRESS', 'black');
+    const inprogressBoardObj = new boardObj('inprogress-board', 'IN-PROGRESS', '#1a1a1a');
     boardsData.push(inprogressBoardObj);
 
-    const completedBoardObj = new boardObj('completed-board', 'COMPLETED', 'black');
+    const completedBoardObj = new boardObj('completed-board', 'COMPLETED', '#1a1a1a');
     boardsData.push(completedBoardObj);
 
     syncLocalStorage();
@@ -79,14 +78,55 @@ kanbanBoardName.addEventListener('input', () => {
 })
 issueItems.forEach(attachDragHandlers);
 
+sortpriority.addEventListener('input', () => {
+    sortIssuesByPriority(sortpriority.value);
+})
+sortpriority.addEventListener('change', () => {
+    sortIssuesByPriority(sortpriority.value);
+})
+
+
 const boards = document.querySelectorAll('.board');
 boards.forEach((board) => {
     board.addEventListener('dragover', () => {
-        console.log('Something Dragged');
+        
+        //console.log('Something Dragged');
         const issueItem = document.querySelector('.flying');
         board.appendChild(issueItem);
+        
+        let foundItem;
+
+        // SYNC DATA
+        // iterate over all boardsData
+        boardsData.forEach(boardObj => {
+             //console.log('boardissues ',boardObj.boardIssues);
+            boardObj.boardIssues.forEach(issue => {
+                //console.log('Issue ID',issueItem.id);
+                if (issue.issueID == issueItem.id) {
+                    // found the item
+                    console.log('found item');
+                    foundItem = issue;
+                }
+
+            })
+        })
+
+        boardsData.forEach(boardObj => {
+            console.log('board id ', boardObj.boardID);
+            console.log('boards id ',board.id);
+            
+
+            if (boardObj.boardID == board.id) {
+               // boardObj.boardIssues.push(foundItem);
+            }
+        })
+        
+        syncLocalStorage();
+
+
     })
     board.addEventListener('dragenter', () => {
+        console.log(board);
         board.classList.add('board-drag-active');
     })
     board.addEventListener('dragleave', () => {
@@ -150,12 +190,12 @@ function attachDragHandlers(target) {
 }
 
 function createNewIssue() {
-
+    const todoItems = document.getElementById('todo-items');
     // Inputs
     const crIssueName = document.getElementById('cr-issue-name').value;
     const crIssueP1 = document.getElementById('p1radio').checked;
-    const crIssueP2 = document.getElementById('p1radio').checked;
-    const crIssueP3 = document.getElementById('p1radio').checked;
+    const crIssueP2 = document.getElementById('p2radio').checked;
+    const crIssueP3 = document.getElementById('p3radio').checked;
     const crIssueDate = document.getElementById('cr-issue-date').value;
     // let crIssueDateFormatted = new Date(crIssueDate);
     // crIssueDateFormatted = crIssueDateFormatted.toLocaleDateString;
@@ -164,51 +204,58 @@ function createNewIssue() {
 
     if (!crIssueName || !crIssueDate || !crIssueLabels) return;
 
-    let selectedPriority = "p1";
+    let selectedPriority = 1;
     if (crIssueP1) {
-        selectedPriority = "p1";
+        selectedPriority = 1;
     }
     else if (crIssueP2) {
-        selectedPriority = "p2";
+        selectedPriority = 2;
     }
     else if (crIssueP3) {
-        selectedPriority = "p3";
+        selectedPriority = 3;
     }
+    
+    const newIssue = new IssueObj(Math.ceil(Math.random() * 1000000), selectedPriority, crIssueName, 
+        crIssueLabels, crIssueDate);
+    //console.log(newIssue);
+    boardsData[0].boardIssues.push(newIssue);
+    syncLocalStorage();
+   
 
-    const issueDiv = document.createElement('div');
-    issueDiv.className = 'issue-item';
-    issueDiv.setAttribute('draggable', true);
+    // const issueDiv = document.createElement('div');
+    // issueDiv.className = 'issue-item';
+    // issueDiv.setAttribute('draggable', true);
 
  
-    const prioritySpan = document.createElement('span')
-    prioritySpan.className = `priority ${selectedPriority}`
+    // const prioritySpan = document.createElement('span')
+    // prioritySpan.className = `priority ${selectedPriority}`
 
-    const issueContent = document.createElement('p')
-    issueContent.className = 'issue-content'
+    // const issueContent = document.createElement('p')
+    // issueContent.className = 'issue-content'
 
-    const issueLabelSpan = document.createElement('span')
-    issueLabelSpan.className = 'issue-label';
-    issueLabelSpan.innerText = crIssueLabels;
+    // const issueLabelSpan = document.createElement('span')
+    // issueLabelSpan.className = 'issue-label';
+    // issueLabelSpan.innerText = crIssueLabels;
 
-    const issueNameSpan = document.createElement('span')
-    issueNameSpan.className = 'issue-title';
-    issueNameSpan.innerText = crIssueName;
+    // const issueNameSpan = document.createElement('span')
+    // issueNameSpan.className = 'issue-title';
+    // issueNameSpan.innerText = crIssueName;
 
-    const dueDateSpan = document.createElement('span')
-    dueDateSpan.className = 'issue-date';
-    dueDateSpan.innerText = `Due Date : ${crIssueDate}`;
+    // const dueDateSpan = document.createElement('span')
+    // dueDateSpan.className = 'issue-date';
+    // dueDateSpan.innerText = `Due Date : ${crIssueDate}`;
     
-    issueContent.appendChild(issueLabelSpan);
-    issueContent.appendChild(issueNameSpan);
-    issueContent.appendChild(dueDateSpan);
+    // issueContent.appendChild(issueLabelSpan);
+    // issueContent.appendChild(issueNameSpan);
+    // issueContent.appendChild(dueDateSpan);
 
-    issueDiv.appendChild(prioritySpan);
-    issueDiv.appendChild(issueContent);
-    attachDragHandlers(issueDiv);
+    // issueDiv.appendChild(prioritySpan);
+    // issueDiv.appendChild(issueContent);
+    // attachDragHandlers(issueDiv);
     
-    todoItems.appendChild(issueDiv)
+    // todoItems.appendChild(issueDiv)
     btncreateIssueModalClose.click();
-    alert('Issue Created Successfully!');
+    parent.location.reload();
 }
 
 
@@ -235,11 +282,19 @@ function createNewBoard() {
 function updateBoardColor(event) {
     const colorSelected = event.target.value;
     const board = event.target.parentNode.parentNode;
+    const boardID = board.id;
     const boardTitle = board.querySelector('.board-title');
-    console.log(event.target, event.target.parentNode);
-
     boardTitle.style.color = colorSelected;
     board.style.borderColor = colorSelected;
+    console.log('Insired updateBoardColor', boardsData);
+    boardsData.forEach((board) => {
+        if (board.boardID == boardID) {
+            board.boardColor = colorSelected;
+            console.log('boardsData Updated!');
+        }
+    })
+
+    syncLocalStorage();
     return;
 }
 
@@ -248,6 +303,11 @@ function loadLocales() {
     const boardname = localStorage.getItem('board-name');
     if (boardname) {
         kanbanBoardName.value = boardname;
+    }
+
+    const sortP = localStorage.getItem('sort-priority');
+    if (sortP) {
+        sortpriority.value = sortP;
     }
 
     loadBoardsDataFromStorage()
@@ -267,7 +327,12 @@ function loadBoardsDataFromStorage() {
 
 function syncLocalStorage() {
     
+    //SYNC BOARD DATA
     if (boardsData.length > 0) localStorage.setItem('boardsData', JSON.stringify(boardsData));
+
+    //SYNC BOARD FILTERS
+    if (sortpriority.value.length > 0 ) localStorage.setItem('sort-priority', sortpriority.value);
+
 
     console.log('Synced Data! ', JSON.parse(localStorage.getItem('boardsData')));
 }
@@ -301,15 +366,19 @@ function DOMCreateBoardElement(board) {
     let boardDiv = document.createElement('div');
     boardDiv.id = board.boardID;
     boardDiv.className = "board"
+    boardDiv.style.borderColor =  board.boardColor;
+
     const boardHeader = document.createElement('div');
     boardHeader.className = "board-header";
     const boardTitleSpan = document.createElement('span');
     boardTitleSpan.innerHTML = board.boardName
     boardTitleSpan.className = 'board-title';
+    boardTitleSpan.style.color = board.boardColor;
     const colorPicker = document.createElement('input');
     colorPicker.type = 'color';
     colorPicker.name = 'board-color-picker'
     colorPicker.className = 'board-color-picker'
+    colorPicker.value = board.boardColor;
     boardHeader.appendChild(boardTitleSpan);
     boardHeader.appendChild(colorPicker);
     boardDiv.appendChild(boardHeader);
@@ -330,18 +399,19 @@ if (boardDiv.id == 'todo-board') itemsContainer.id = 'todo-items';
 
   
         const issueItemDiv = document.createElement('div');
-        issueItemDiv.draggable = 'true';
+        issueItemDiv.id = issue.issueID;
         issueItemDiv.className = 'issue-item';
+        issueItemDiv.draggable = 'true';
         attachDragHandlers(issueItemDiv);
 
         const prioritySpan = document.createElement('span');
         prioritySpan.className = 'priority';
         switch (issue.issuePriority) {
-            case "P1": prioritySpan.classList.add('p1');
+            case 1: prioritySpan.classList.add('p1');
                          break;
-            case "P2": prioritySpan.classList.add('p2');
+            case 2: prioritySpan.classList.add('p2');
                 break;
-                case "P3": prioritySpan.classList.add('p3');
+            case 3: prioritySpan.classList.add('p3');
                 break;
             default : prioritySpan.classList.add('p3')
         }
@@ -374,6 +444,20 @@ if (boardDiv.id == 'todo-board') itemsContainer.id = 'todo-items';
 
 }
 
+function sortIssuesByPriority(order) {
+    
+    boardsData.forEach(board => {
+        if (order == "HTL") {
+            board.boardIssues.sort((a, b) => a.issuePriority - b.issuePriority);
+        }
+        if (order == "LTH") {
+            board.boardIssues.sort((a, b) => b.issuePriority - a.issuePriority);
+        }
+       
+    })
+    syncLocalStorage();
+    parent.location.reload();
+}
 
 
 // // boardObj
