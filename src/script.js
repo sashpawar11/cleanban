@@ -1,4 +1,31 @@
 
+// CLASS DEFINITIONS
+class boardObj {
+
+    constructor(ID,boardName,boardColor) {
+        this.boardID = ID;
+        this.boardName = boardName;
+        this.boardColor = boardColor;
+        this.boardIssues = [];
+    }
+
+    setBoardIssue(issueObj) {
+        this.boardIssues.push(issueObj);
+    }
+}
+
+
+class IssueObj {
+    constructor(issueName, issueLabel, issueDueDate) {
+        this.issueName = issueName;
+        this.issueLabel = issueLabel;
+        this.issueDueDate = issueDueDate;
+    }
+}
+
+
+
+
 // INITIALIZE //
 
 const boardsContainer = document.querySelector('.container');
@@ -14,6 +41,16 @@ const btncreateIssueModalClose = document.getElementById("closeCreateIssueModalB
 const btncreateIssueModalSubmit = document.getElementById("btnSubmitCRIssue");
 const todoItems = document.getElementById('todo-items');
 const colorPickerBoard = document.querySelectorAll('.board-color-picker');
+
+const boardsData = []
+
+
+const todoBoardObj = new boardObj('todoBoard', 'TODO', 'black');
+const todoBoardObjItem = new IssueObj('Create Kanban Board', 'current-sprint', '02/03/2025');
+todoBoardObj.setBoardIssue(todoBoardObjItem);
+boardsData.push(todoBoardObj);
+console.log(boardsData);
+
 
 loadLocales();
 

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CleanBan - your simple Kanban Solution</title>
+    <script src="https://kit.fontawesome.com/345deea68e.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./src/style.css" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -12,26 +13,48 @@
     <div id="createIssueModal" class="modal">
     <div class="modal-content">
       <button  id="closeCreateIssueModalButton" class="close">&times;</button>
-      <div class="modal-info-container">
-        <span>
-        <label>New Issue Name:</label>
-        <input name="createissue-Name" id="cr-issue-name" type="text" placeholder="Enter Issue Name"><br>
-        </span>
-        <span>
-            <label>Choose Priority:</label>
-            <input name="createissue-Priority" id="p1radio" type="radio" value="P1">
-            <label for="P1" >High</label>
-            <input name="createissue-Priority" id="p2radio" type="radio" value="P2">
-            <label for="P2" >Medium</label>
-            <input name="createissue-Priority" id="p3radio" type="radio" value="P3">
-            <label for="P3" >Low</label>
-        </span>
-        <br>
-
-        <label>Estimated Due Date:</label>
-        <input name="cr-issue-date" id="cr-issue-date" type="date" placeholder="Add Date Here"><br>
-        <label>Add Issue Label:</label>
-        <input name="cr-issue-labels" id="cr-issue-labels" type="text" placeholder="Add Label Here"><br>
+      <div>
+        <table id="modal-info-container">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="createissue-Name">New Issue Name:</label>
+                    </td>
+                    <td>
+                        <input name="createissue-Name" id="cr-issue-name" type="text" class="crinput" placeholder="Enter Issue Name">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="createissue-Priority">Choose Priority:</label>
+                    </td>
+                    <td>
+                        <input name="createissue-Priority" id="p1radio" type="radio" value="P1" class="crinput">
+                        <label for="P1" >High</label>
+                        <input name="createissue-Priority" id="p2radio" type="radio" value="P2" class="crinput">
+                        <label for="P2" >Medium</label>
+                        <input name="createissue-Priority" id="p3radio" type="radio" value="P3" class="crinput">
+                        <label for="P3" >Low</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                         <label for="cr-issue-date">Estimated Due Date:</label>
+                    </td>
+                    <td>
+                        <input name="cr-issue-date" id="cr-issue-date" type="date" placeholder="Add Date Here" class="crinput">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                         <label for="cr-issue-labels">Add Issue Label:</label>
+                    </td>
+                    <td>
+                        <input name="cr-issue-labels" id="cr-issue-labels" type="text" placeholder="Add Label Here" class="crinput">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <button id="btnSubmitCRIssue">Submit Issue</button>
       </div>
      
@@ -40,8 +63,9 @@
   </div>
     <div class="header">
         <input id="board-name" name="board-name" placeholder="Enter Your Board Name"></input>
-        <button id="create-issue" type="button">Create New Issue</button>
-        </div>
+        <button id="create-issue" type="button"><i class="fa-solid fa-square-plus"></i>&nbsp;&nbsp;Create New Issue</button>
+        <i class="fa-brands fa-js"></i>
+    </div>
     <div class="container">
         <div id="todo-board" class="board">
             <div class="board-header">
@@ -77,8 +101,20 @@
             </div>
 
         </div>
-        <div id="inprogress-board" class="board"><h1>IN-PROGRESS</h1></div>
-        <div id="completed-board" class="board"><h1>COMPLETED</h1></div>
+        <div id="inprogress-board" class="board">  
+            <div class="board-header">
+            <span class="board-title">IN-PROGRESS</span>
+            <input type="color" name="board-color-picker" class="board-color-picker">
+            </div>
+            <div id="inprogress-items" class="items"></div>
+        </div>
+        <div id="completed-board" class="board">  
+            <div class="board-header">
+            <span class="board-title">COMPLETED</span>
+            <input type="color" name="board-color-picker" class="board-color-picker">
+            </div>
+            <div id="inprogress-items" class="items"></div>
+        </div>
         <div id="adhoc-board"><button id="btn-addboard">+</button></div>
     </div>
 
