@@ -18,22 +18,22 @@
             <tbody>
                 <tr>
                     <td>
-                        <label for="createissue-Name">New Issue Name:</label>
+                        <label for="editissue-Name">New Issue Name:</label>
                     </td>
                     <td>
-                        <input name="createissue-Name" id="cr-issue-name" type="text" class="crinput" placeholder="Enter Issue Name">
+                        <input name="editissue-Name" id="cr-issue-name" type="text" class="crinput" placeholder="Enter Issue Name">
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <label for="createissue-Priority">Choose Priority:</label>
+                        <label for="editissue-Priority">Choose Priority:</label>
                     </td>
                     <td>
-                        <input name="createissue-Priority" id="p1radio" type="radio" value="P1" class="crinput">
+                        <input name="editissue-Priority" id="p1radio" type="radio" value="P1" class="crinput">
                         <label for="P1" >High</label>
-                        <input name="createissue-Priority" id="p2radio" type="radio" value="P2" class="crinput">
+                        <input name="editissue-Priority" id="p2radio" type="radio" value="P2" class="crinput">
                         <label for="P2" >Medium</label>
-                        <input name="createissue-Priority" id="p3radio" type="radio" value="P3" class="crinput">
+                        <input name="editissue-Priority" id="p3radio" type="radio" value="P3" class="crinput">
                         <label for="P3" >Low</label>
                     </td>
                 </tr>
@@ -56,6 +56,57 @@
             </tbody>
         </table>
         <button id="btnSubmitCRIssue">Submit Issue</button>
+      </div>
+     
+    </div>
+  
+  </div>
+  <div id="editIssueModal" class="modal">
+    <div class="modal-content">
+      <button  id="closeEditIssueModalButton" class="close">&times;</button>
+      <div>
+        <table id="modal-info-container">
+            <tbody>
+                <tr>
+                    <td>
+                        <label for="editIssue-Name">Issue Name:</label>
+                    </td>
+                    <td>
+                        <input name="editissue-Name" id="ed-issue-name" type="text" class="crinput" placeholder="">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="editissue-Priority">Priority:</label>
+                    </td>
+                    <td>
+                        <input name="editissue-Priority" id="edp1radio" type="radio" value=1 class="crinput">
+                        <label for="P1" >High</label>
+                        <input name="editissue-Priority" id="edp2radio" type="radio" value=2 class="crinput">
+                        <label for="P2" >Medium</label>
+                        <input name="editissue-Priority" id="edp3radio" type="radio" value=3 class="crinput">
+                        <label for="P3" >Low</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                         <label for="ed-issue-date">Estimated Due Date:</label>
+                    </td>
+                    <td>
+                        <input name="ed-issue-date" id="ed-issue-date" type="date" placeholder="" class="crinput">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                         <label for="ed-issue-labels">Issue Label:</label>
+                    </td>
+                    <td>
+                        <input name="ed-issue-labels" id="ed-issue-labels" type="text" placeholder="" class="crinput">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button id="btnUpdateEDIssue">Update Issue</button>
       </div>
      
     </div>

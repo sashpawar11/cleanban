@@ -40,8 +40,11 @@ const kanbanBoardName = document.getElementById('board-name');
 const btnCreateIssue = document.getElementById('create-issue');
 const btnCreateBoard = document.getElementById('btn-addboard');
 const createIssueModal = document.getElementById("createIssueModal");
+const editIssueModal = document.getElementById("editIssueModal");
 const btncreateIssueModalClose = document.getElementById("closeCreateIssueModalButton");
 const btncreateIssueModalSubmit = document.getElementById("btnSubmitCRIssue");
+const btneditIssueModalClose = document.getElementById("closeEditIssueModalButton");
+const btneditIssueModalSubmit = document.getElementById("btnUpdateEDIssue");
 const sortpriority = document.getElementById('sortpriority');
 
 let boardsData = [];
@@ -174,16 +177,22 @@ btncreateIssueModalSubmit.onclick = function() {
 }
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
-    if (event.target == createIssueModal) {
-        modal.style.display = "none";
-    }
-}
+// window.onclick = function (event) {
+//     if (event.target == createIssueModal) {
+//         modal.style.display = "none";
+//     }
+// }
 
 const itemCrudBtns = document.querySelectorAll('.issue-buttons')
 itemCrudBtns.forEach(item => {
     item.addEventListener('click',execIssueCrud)
 })
+
+btneditIssueModalClose.onclick = function() {
+    editIssueModal.style.display = "none";
+}
+
+
 /// FUNCTIONS ///////////
 
 function attachDragHandlers(target) {
@@ -195,6 +204,15 @@ function attachDragHandlers(target) {
         target.classList.remove('flying');
     });
 
+}
+// When the user clicks on the button, open the modal
+btnCreateIssue.onclick = function() {
+    createIssueModal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+btncreateIssueModalClose.onclick = function() {
+    createIssueModal.style.display = "none";
 }
 
 function execIssueCrud(event) {
@@ -212,11 +230,91 @@ function execIssueCrud(event) {
     const currIssueID = currIssue.id;
 
     if (event.target.id == "edit-issue") {
+            
             editIssueMode(currBoardID,currIssueID)
     }
     else if (event.target.id == "delete-issue") {
             deleteIssue(currBoardID,currIssueID)
     }
+}
+
+function editIssueMode(editBoardID, editIssueID) {
+    let issueObj = {
+    }
+    editIssueModal.style.display = "block";
+    boardsData.forEach(board => {
+        if (board.boardID == editBoardID) {
+
+            board.boardIssues.forEach(issueItem => {
+                if (issueItem.issueID == editIssueID) {
+                    issueObj = issueItem;
+                }
+            })
+        }
+       
+    })
+
+   
+
+    const edIssueName = document.getElementById('ed-issue-name');
+    const edIssueP1 = document.getElementById('edp1radio')
+    const edIssueP2 = document.getElementById('edp2radio')
+    const edIssueP3 = document.getElementById('edp3radio')
+    const edIssueDate = document.getElementById('ed-issue-date')
+    // let crIssueDateFormatted = new Date(crIssueDate);
+    // crIssueDateFormatted = crIssueDateFormatted.toLocaleDateString;
+
+    const edIssueLabelName = document.getElementById('ed-issue-labels');
+
+    edIssueName.value = issueObj.issueName;
+    switch (issueObj.issuePriority) {
+        case 1: edIssueP1.checked = true;
+            break;
+        case 2: edIssueP2.checked = true;
+            break;
+        case 3: edIssueP3.checked = true;
+            break;
+    }
+    let tempDate = new Date(issueObj.issueDueDate);
+    let formattedDate = tempDate.toISOString().split('T')[0];
+    edIssueDate.value = formattedDate
+   
+    console.log(issueObj);
+    edIssueLabelName.value = issueObj.issueLabel.issueLabelName;
+
+    btneditIssueModalSubmit.onclick = function() {
+        issueObj.issueName = edIssueName.value;
+        
+       if(edIssueP1.checked) issueObj.issuePriority = parseInt(edIssueP1.value);
+       if(edIssueP2.checked) issueObj.issuePriority = parseInt(edIssueP2.value);
+       if(edIssueP3.checked) issueObj.issuePriority = parseInt(edIssueP3.value);
+        
+        issueObj.issueDueDate = edIssueDate.value;
+        issueObj.issueLabel.issueLabelName = edIssueLabelName.value;
+
+        boardsData.forEach(board => {
+            if (board.boardID == editBoardID) {
+    
+                board.boardIssues.forEach(issueItem => {
+                    if (issueItem.issueID == editIssueID) {
+                        issueItem = issueObj;
+                    }
+                })
+            }
+            
+            delete issueObj;
+           
+        })
+        syncLocalStorage();
+        btneditIssueModalClose.click();
+        parent.location.reload();
+    }
+
+    
+
+
+
+
 }
 
 function deleteIssue(delBoardID, delIssueID) {
