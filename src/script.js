@@ -96,40 +96,20 @@ const boards = document.querySelectorAll('.board');
 boards.forEach((board) => {
     board.addEventListener('dragover', () => {
         
-        //console.log('Something Dragged');
+        //console.log('Something Dragged Over Me :' , board);
         const issueItem = document.querySelector('.flying');
         board.appendChild(issueItem);
         
-        let foundItem;
 
-        // SYNC DATA
-        // iterate over all boardsData
-        boardsData.forEach(boardObj => {
-             //console.log('boardissues ',boardObj.boardIssues);
-            boardObj.boardIssues.forEach(issue => {
-                //console.log('Issue ID',issueItem.id);
-                if (issue.issueID == issueItem.id) {
-                    // found the item
-                    console.log('found item');
-                    foundItem = issue;
-                }
-
-            })
-        })
-
-        boardsData.forEach(boardObj => {
-            console.log('board id ', boardObj.boardID);
-            console.log('boards id ',board.id);
-            
-
-            if (boardObj.boardID == board.id) {
-               // boardObj.boardIssues.push(foundItem);
+        // SYNC LOCALSTORAGE
+        for (let i = 0; i < boardsData.length; i++){
+                for (let j = 0; j < boardsData[i].boardIssues.length; j++){
+                    if (boardsData[i].boardIssues[j].issueID == issueItem.id) {
+                        if (boardsData[i].boardID == board.id) return;
+                        moveIssueToBoard(i,j,board.id)
+                    }
             }
-        })
-        
-        syncLocalStorage();
-
-
+        }
     })
     board.addEventListener('dragenter', () => {
         console.log(board);
@@ -365,40 +345,6 @@ function createNewIssue() {
     //console.log(newIssue);
     boardsData[0].boardIssues.push(newIssue);
     syncLocalStorage();
-   
-
-    // const issueDiv = document.createElement('div');
-    // issueDiv.className = 'issue-item';
-    // issueDiv.setAttribute('draggable', true);
-
- 
-    // const prioritySpan = document.createElement('span')
-    // prioritySpan.className = `priority ${selectedPriority}`
-
-    // const issueContent = document.createElement('p')
-    // issueContent.className = 'issue-content'
-
-    // const issueLabelSpan = document.createElement('span')
-    // issueLabelSpan.className = 'issue-label';
-    // issueLabelSpan.innerText = crIssueLabels;
-
-    // const issueNameSpan = document.createElement('span')
-    // issueNameSpan.className = 'issue-title';
-    // issueNameSpan.innerText = crIssueName;
-
-    // const dueDateSpan = document.createElement('span')
-    // dueDateSpan.className = 'issue-date';
-    // dueDateSpan.innerText = `Due Date : ${crIssueDate}`;
-    
-    // issueContent.appendChild(issueLabelSpan);
-    // issueContent.appendChild(issueNameSpan);
-    // issueContent.appendChild(dueDateSpan);
-
-    // issueDiv.appendChild(prioritySpan);
-    // issueDiv.appendChild(issueContent);
-    // attachDragHandlers(issueDiv);
-    
-    // todoItems.appendChild(issueDiv)
     btncreateIssueModalClose.click();
     parent.location.reload();
 }
@@ -650,6 +596,23 @@ function syncLabels(labelObj) {
     console.log(`Issue labels ${issueLabels.toString()}`);
     syncLocalStorage();
 
+}
+
+function moveIssueToBoard(idxSourceBoard, idxSourceIssue, targetBoardID) {
+    
+    boardsData.forEach(board => {
+        
+        if (board.boardID == targetBoardID) {
+            
+            board.boardIssues.push(boardsData[idxSourceBoard].boardIssues[idxSourceIssue]);
+            boardsData[idxSourceBoard].boardIssues.splice(idxSourceIssue, 1)
+            syncLocalStorage();
+            return;
+        }
+
+    })
+
+  
 }
 
 function clearLocalStorage() {
