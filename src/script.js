@@ -55,9 +55,9 @@ loadLocales();
 // fallback/new session
 if (boardsData.length == 0) {
     const todoBoardObj = new boardObj('todo-board', 'TODO', '#1a1a1a');
-    const todoBoardObjItem = new IssueObj(Math.ceil(Math.random() * 1000000),1,'Create Kanban Board', 'current-sprint', 'blueviolet',new Date().toLocaleDateString());
-    const todoBoardObjItem2 = new IssueObj(Math.ceil(Math.random() * 1000000),2,'Edit and Delete Issue', 'current-sprint', 'blueviolet', new Date().toLocaleDateString())
-    const todoBoardObjItem3 = new IssueObj(Math.ceil(Math.random() * 1000000), 3, 'Sync LocalStorage', 'current-sprint','blueviolet',new Date().toLocaleDateString());
+    const todoBoardObjItem = new IssueObj(Math.ceil(Math.random() * 1000000),1,'Create Kanban Board', 'current-sprint', '#8a2be2',new Date().toLocaleDateString());
+    const todoBoardObjItem2 = new IssueObj(Math.ceil(Math.random() * 1000000),2,'Edit and Delete Issue', 'current-sprint', '#8a2be2', new Date().toLocaleDateString())
+    const todoBoardObjItem3 = new IssueObj(Math.ceil(Math.random() * 1000000), 3, 'Sync LocalStorage', 'current-sprint','#8a2be2',new Date().toLocaleDateString());
     todoBoardObj.setBoardIssue(todoBoardObjItem);
     todoBoardObj.setBoardIssue(todoBoardObjItem2);
     todoBoardObj.setBoardIssue(todoBoardObjItem3);
@@ -120,7 +120,7 @@ boards.forEach((board) => {
     })
 })
 
-const colorPickerBoard = document.querySelectorAll('.board-color-picker');
+const colorPickerBoard = document.querySelectorAll('.vBoard');
 colorPickerBoard.forEach((picker) => {
     picker.addEventListener('input', updateBoardColor);
     // picker.addEventListener('input', () => {
@@ -142,15 +142,8 @@ btnCreateBoard.addEventListener('click', () => {
     createNewBoard();
 })
 
-// When the user clicks on the button, open the modal
-btnCreateIssue.onclick = function() {
-    createIssueModal.style.display = "block";
-}
 
-// When the user clicks on <span> (x), close the modal
-btncreateIssueModalClose.onclick = function() {
-    createIssueModal.style.display = "none";
-}
+
 
 btncreateIssueModalSubmit.onclick = function() {
     createNewIssue();
@@ -188,11 +181,13 @@ function attachDragHandlers(target) {
 // When the user clicks on the button, open the modal
 btnCreateIssue.onclick = function() {
     createIssueModal.style.display = "block";
+    renderIssueLabelChips();
 }
 
 // When the user clicks on <span> (x), close the modal
 btncreateIssueModalClose.onclick = function() {
     createIssueModal.style.display = "none";
+    parent.location.reload();
 }
 
 function execIssueCrud(event) {
@@ -326,8 +321,10 @@ function createNewIssue() {
     // crIssueDateFormatted = crIssueDateFormatted.toLocaleDateString;
 
     const crIssueLabelName = document.getElementById('cr-issue-labels').value;
+    const crIssueLabelColor = document.getElementById('cr-color-picker').value;
+    
 
-    if (!crIssueName || !crIssueDate || !crIssueLabelName) return;
+    if (!crIssueName || !crIssueDate || !crIssueLabelName) { alert('All fields are required!'); return; };
 
     let selectedPriority = 1;
     if (crIssueP1) {
@@ -341,7 +338,7 @@ function createNewIssue() {
     }
     
     const newIssue = new IssueObj(Math.ceil(Math.random() * 1000000), selectedPriority, crIssueName, 
-    crIssueLabelName, 'green',crIssueDate);
+    crIssueLabelName, crIssueLabelColor,crIssueDate);
     //console.log(newIssue);
     boardsData[0].boardIssues.push(newIssue);
     syncLocalStorage();
@@ -476,7 +473,7 @@ function DOMCreateBoardElement(board) {
     const colorPicker = document.createElement('input');
     colorPicker.type = 'color';
     colorPicker.name = 'board-color-picker'
-    colorPicker.className = 'board-color-picker'
+    colorPicker.className = 'c vBoard'
     colorPicker.value = board.boardColor;
     boardHeader.appendChild(boardTitleSpan);
     boardHeader.appendChild(colorPicker);
@@ -615,9 +612,53 @@ function moveIssueToBoard(idxSourceBoard, idxSourceIssue, targetBoardID) {
   
 }
 
+function renderIssueLabelChips() {
+    const suggestedLabelsContainer = document.querySelector('.suggested-labels');
+
+    issueLabels.forEach(label=> {
+        const labelSpan = document.createElement('span');
+        labelSpan.className = 'issue-label sg';
+        labelSpan.innerText = label.issueLabelName;
+        labelSpan.style.backgroundColor = label.issueLabelColor;
+        suggestedLabelsContainer.appendChild(labelSpan);
+    })
+
+    const renderedLabel = document.querySelectorAll('.sg')
+    renderedLabel.forEach(label => {
+        label.addEventListener('click', () => {
+            const temp = document.querySelectorAll('.labelSelected');
+            temp.forEach(item => {
+                item.classList.remove('.labelSelected');
+            })
+            label.classList.add('labelSelected');
+
+            let crIssueLabelName = document.getElementById('cr-issue-labels');
+            let crIssueLabelColor = document.getElementById('cr-color-picker');
+
+            crIssueLabelName.value = label.innerText;
+            crIssueLabelColor.value = label.style.backgroundColor;
+
+        })
+    })
+
+}
+
+// UTILTIY FUNCTIONS
+
+const componentToHex = (c) => {
+    const hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+  }
+  
+  const rgbToHex = (r, g, b) => {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+  }
+
 function clearLocalStorage() {
     localStorage.clear();
 }
+
+
 // // boardObj
 // board {
 //     boardName:
