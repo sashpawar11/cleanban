@@ -21,7 +21,7 @@ body {
 }
 
 
-#create-issue{
+.header-buttons{
 
     display: inline-block;
     outline: 0;
@@ -43,7 +43,7 @@ body {
     
 }
 
-#create-issue:hover {
+.header-buttons:hover {
     background-color: #000;
     border-color: rgb(240, 224, 255);
     color: rgb(240, 224, 255);

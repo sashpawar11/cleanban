@@ -1,4 +1,3 @@
-
 // CLASS DEFINITIONS
 class boardObj {
 
@@ -38,6 +37,7 @@ const adhocBoard = document.getElementById('adhoc-board');
 const issueItems = document.querySelectorAll('.issue-item')
 const kanbanBoardName = document.getElementById('board-name');
 const btnCreateIssue = document.getElementById('create-issue');
+const btnExportBoard = document.getElementById('export-board');
 const btnCreateBoard = document.getElementById('btn-addboard');
 const createIssueModal = document.getElementById("createIssueModal");
 const editIssueModal = document.getElementById("editIssueModal");
@@ -87,7 +87,7 @@ kanbanBoardName.addEventListener('input', () => {
 })
 issueItems.forEach(attachDragHandlers);
 
-sortpriority.addEventListener('input', () => {
+sortpriority.addEventListener('click', () => {
     sortIssuesByPriority(sortpriority.value);
 })
 sortpriority.addEventListener('change', () => {
@@ -185,6 +185,10 @@ function attachDragHandlers(target) {
 btnCreateIssue.onclick = function() {
     createIssueModal.style.display = "block";
     renderIssueLabelChips("Create");
+}
+
+btnExportBoard.onclick = function() {
+    ExportBoardBackupJSON();
 }
 
 // When the user clicks on <span> (x), close the modal
@@ -717,7 +721,37 @@ function clearLocalStorage() {
     localStorage.clear();
 }
 
+function ExportBoardBackupJSON(){
 
+    const filename = 'boardbackup';
+    const blob = new Blob([JSON.stringify(localStorage)], {
+      type: 'application/json',
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${filename}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    // copy(`Object.entries(${JSON.stringify(localStorage)})
+    // .forEach(([k,v])=>localStorage.setItem(k,v))`)
+};
+
+function ImportBoardBackup(){
+
+    const filename = 'boardbackup';
+    const blob = new Blob([JSON.stringify(localStorage)], {
+      type: 'application/json',
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${filename}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    // copy(`Object.entries(${JSON.stringify(localStorage)})
+    // .forEach(([k,v])=>localStorage.setItem(k,v))`)
+};
 // // boardObj
 // board {
 //     boardName:
