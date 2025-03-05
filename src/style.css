@@ -164,6 +164,15 @@ input[name=cr-color-picker]{
     width: 25px;
 }
 
+.boardControls {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    align-items: center;
+    padding: 10px;
+    margin: 10px 10px;
+    width: 90%;
+}
 
 ::-webkit-color-swatch-wrapper { 
     border: none;
@@ -217,7 +226,7 @@ input[name=cr-color-picker]{
     font-size: 0.8em;
     /* background-color: rgb(235, 235, 235); */
     color: white;
-    padding: 1px 5px;
+    padding: 3px 5px;
     width: fit-content;
     border-radius: 5px;
     font-weight: 400;

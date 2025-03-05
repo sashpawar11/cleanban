@@ -46,6 +46,7 @@ const btncreateIssueModalSubmit = document.getElementById("btnSubmitCRIssue");
 const btneditIssueModalClose = document.getElementById("closeEditIssueModalButton");
 const btneditIssueModalSubmit = document.getElementById("btnUpdateEDIssue");
 const sortpriority = document.getElementById('sortpriority');
+const allLabelFilter = document.getElementById('main-all-label');
 
 let boardsData = [];
 let issueLabels = [];
@@ -73,12 +74,14 @@ if (boardsData.length == 0) {
 }
 
 
- renderBoardData()
-
+renderBoardData()
+renderIssueLabelChips("Main");
 
 
 /// EVENT HANDLERS ///////////
-
+allLabelFilter.addEventListener('click', () => {
+    parent.location.reload();
+})
 kanbanBoardName.addEventListener('input', () => {
     localStorage.setItem('board-name', kanbanBoardName.value);
 })
@@ -163,6 +166,7 @@ itemCrudBtns.forEach(item => {
 
 btneditIssueModalClose.onclick = function() {
     editIssueModal.style.display = "none";
+    parent.location.reload();
 }
 
 
@@ -181,7 +185,7 @@ function attachDragHandlers(target) {
 // When the user clicks on the button, open the modal
 btnCreateIssue.onclick = function() {
     createIssueModal.style.display = "block";
-    renderIssueLabelChips();
+    renderIssueLabelChips("Create");
 }
 
 // When the user clicks on <span> (x), close the modal
@@ -205,8 +209,8 @@ function execIssueCrud(event) {
     const currIssueID = currIssue.id;
 
     if (event.target.id == "edit-issue") {
-            
             editIssueMode(currBoardID,currIssueID)
+
     }
     else if (event.target.id == "delete-issue") {
             deleteIssue(currBoardID,currIssueID)
@@ -214,9 +218,11 @@ function execIssueCrud(event) {
 }
 
 function editIssueMode(editBoardID, editIssueID) {
+    editIssueModal.style.display = "block";
+    renderIssueLabelChips("Edit");
+
     let issueObj = {
     }
-    editIssueModal.style.display = "block";
     boardsData.forEach(board => {
         if (board.boardID == editBoardID) {
 
@@ -236,10 +242,12 @@ function editIssueMode(editBoardID, editIssueID) {
     const edIssueP2 = document.getElementById('edp2radio')
     const edIssueP3 = document.getElementById('edp3radio')
     const edIssueDate = document.getElementById('ed-issue-date')
+    const edIssueLabelName = document.getElementById('ed-issue-labels')
+    const edIssueLabelColor = document.getElementById('ed-color-picker')
+
     // let crIssueDateFormatted = new Date(crIssueDate);
     // crIssueDateFormatted = crIssueDateFormatted.toLocaleDateString;
 
-    const edIssueLabelName = document.getElementById('ed-issue-labels');
 
     edIssueName.value = issueObj.issueName;
     switch (issueObj.issuePriority) {
@@ -256,6 +264,7 @@ function editIssueMode(editBoardID, editIssueID) {
    
     console.log(issueObj);
     edIssueLabelName.value = issueObj.issueLabel.issueLabelName;
+    edIssueLabelColor.value = issueObj.issueLabel.issueLabelColor;
 
     btneditIssueModalSubmit.onclick = function() {
         issueObj.issueName = edIssueName.value;
@@ -266,6 +275,7 @@ function editIssueMode(editBoardID, editIssueID) {
         
         issueObj.issueDueDate = edIssueDate.value;
         issueObj.issueLabel.issueLabelName = edIssueLabelName.value;
+        issueObj.issueLabel.issueLabelColor = edIssueLabelColor.value;
 
         boardsData.forEach(board => {
             if (board.boardID == editBoardID) {
@@ -348,8 +358,11 @@ function createNewIssue() {
 
 
 function createNewBoard() {
+    const randBoardID = Math.random() * 1000000;
+    
     const boardDiv = document.createElement('div');
     boardDiv.className = 'board';
+    boardDiv.id = randBoardID;
     const boardName = document.createElement('h1');
     boardName.innerHTML = 'Your Board';
     boardDiv.appendChild(boardName);
@@ -358,9 +371,14 @@ function createNewBoard() {
         const issueItem = document.querySelector('.flying');
         boardDiv.appendChild(issueItem);
     })
-    boardsContainer.appendChild(boardDiv);
+    boardsContainer.appendChild(boardDiv); 
     repositionAdHocBoard();
 
+    // sync
+    const tempBoardObj = new boardObj(randBoardID, boardName.innerHTML, 'black');
+    boardsData.push(tempBoardObj);
+    syncLocalStorage();
+    parent.location.reload();
 
 }
 
@@ -569,9 +587,27 @@ function sortIssuesByPriority(order) {
         }
        
     })
+
     syncLocalStorage();
     parent.location.reload();
 }
+
+
+function filterLabels(labelName) {
+    
+
+    let issues = document.querySelectorAll('.issue-item');
+    
+    issues.forEach((issue) => {
+        issue.style.display = 'block';
+        let tempLabel = issue.querySelector('.issue-label')
+        if (tempLabel.innerHTML !== labelName) {
+            issue.style.display = 'none';
+        }
+    })
+
+}
+
 
 function syncLabels(labelObj) {
     console.log(labelObj);
@@ -612,34 +648,58 @@ function moveIssueToBoard(idxSourceBoard, idxSourceIssue, targetBoardID) {
   
 }
 
-function renderIssueLabelChips() {
-    const suggestedLabelsContainer = document.querySelector('.suggested-labels');
+function renderIssueLabelChips(mode) {
+    const crsuggestedLabelsContainer = document.querySelector('.cr-suggested-labels');
+    const edsuggestedLabelsContainer = document.querySelector('.ed-suggested-labels');
+    const mainsuggestedLabelsContainer = document.querySelector('.main-suggested-labels');
+
+
 
     issueLabels.forEach(label=> {
         const labelSpan = document.createElement('span');
         labelSpan.className = 'issue-label sg';
         labelSpan.innerText = label.issueLabelName;
         labelSpan.style.backgroundColor = label.issueLabelColor;
-        suggestedLabelsContainer.appendChild(labelSpan);
-    })
-
-    const renderedLabel = document.querySelectorAll('.sg')
-    renderedLabel.forEach(label => {
-        label.addEventListener('click', () => {
+        if ((mode == "Edit")) {
+            edsuggestedLabelsContainer.appendChild(labelSpan);
+        }
+        else if(mode == "Create"){
+            crsuggestedLabelsContainer.appendChild(labelSpan);
+        }
+        else if(mode == "Main"){
+            mainsuggestedLabelsContainer.appendChild(labelSpan);
+        }
+        labelSpan.addEventListener('click', () => {
             const temp = document.querySelectorAll('.labelSelected');
             temp.forEach(item => {
-                item.classList.remove('.labelSelected');
+                item.classList.remove('labelSelected');
             })
-            label.classList.add('labelSelected');
+            labelSpan.classList.add('labelSelected');
 
             let crIssueLabelName = document.getElementById('cr-issue-labels');
             let crIssueLabelColor = document.getElementById('cr-color-picker');
+            
+            let edIssueLabelName = document.getElementById('ed-issue-labels');
+            let edIssueLabelColor = document.getElementById('ed-color-picker');
+            
+            if (mode == "Edit") {
+                edIssueLabelName.value = label.issueLabelName;
+                edIssueLabelColor.value = label.issueLabelColor;
+            }
+            else if(mode == "Create") {
+                crIssueLabelName.value = label.issueLabelName;
+                crIssueLabelColor.value = label.issueLabelColor;
+            }
+            else if (mode == "Main") {
+                filterLabels(label.issueLabelName);
+            }
 
-            crIssueLabelName.value = label.innerText;
-            crIssueLabelColor.value = label.style.backgroundColor;
+
 
         })
+
     })
+
 
 }
 

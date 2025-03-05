@@ -37,12 +37,12 @@
                         <label for="cr-issue-Priority">Choose Priority:</label>
                     </td>
                     <td>
-                        <input name="cr-issue-Priority" id="p1radio" type="radio" value="P1" class="crinput">
-                        <label for="P1" style="color:rgb(226, 28, 28);" >High</label>&emsp;
-                        <input name="cr-issue-Priority" id="p2radio" type="radio" value="P2" class="crinput">
-                        <label for="P2" style="color: rgb(231, 160, 28);" >Medium</label>&emsp;
-                        <input name="cr-issue-Priority" id="p3radio" type="radio" value="P3" class="crinput">
-                        <label for="P3" style="color: rgb(49, 151, 235);">Low</label>
+                        <input name="cr-issue-Priority" id="p1radio" type="radio" value=1 class="crinput">
+                        <label for="P1" style="color:rgb(226, 28, 28);" ><b>High</b></label>&emsp;
+                        <input name="cr-issue-Priority" id="p2radio" type="radio" value=2 class="crinput">
+                        <label for="P2" style="color: rgb(231, 160, 28);" ><b>Medium</b></label>&emsp;
+                        <input name="cr-issue-Priority" id="p3radio" type="radio" value=3 class="crinput">
+                        <label for="P3" style="color: rgb(49, 151, 235);"><b>Low</b></label>
                     </td>
                 </tr>
                 <tr>
@@ -58,7 +58,7 @@
                          <label for="cr-issue-labels">Add Issue Label:</label>
                     </td>
                     <td>
-                        <input name="cr-issue-labels" id="cr-issue-labels" type="text" placeholder="Add Label Here" class="crinput">
+                        <input id="cr-issue-labels" name="cr-issue-labels" class="cr-issue-labels" type="text" placeholder="Add Label Here" class="crinput">
                         <input type="color" id="cr-color-picker" name="cr-color-picker" class="color-picker cr">
                     </td>
                 </tr>
@@ -67,7 +67,7 @@
                         <label for="cr-issue-labels"><b>OR</b>&nbsp;Choose From Existing Labels:</label>
                     </td>
                     <td>
-                        <div class="suggested-labels">
+                        <div class="cr-suggested-labels">
                             
                         </div>
                     </td>
@@ -76,7 +76,6 @@
         </table>
         <div class="modal-bottom">
             <button id="btnSubmitCRIssue" class="btnsubmitModal">Submit Issue</button>
-
         </div>
       </div>
      
@@ -85,7 +84,11 @@
   </div>
   <div id="editIssueModal" class="modal">
     <div class="modal-content">
-      <button  id="closeEditIssueModalButton" class="close">&times;</button>
+        <div class="modalHeader">
+            <h3 style="color:blueviolet">Edit Issue</h3>
+            <!-- <button  id="closeCreateIssueModalButton" class="close">&times;</button> -->
+            <i id="closeEditIssueModalButton"  class="fa-solid fa-circle-xmark close"></i>
+        </div>
       <div>
         <table id="modal-info-container">
             <tbody>
@@ -102,12 +105,14 @@
                         <label for="editissue-Priority">Priority:</label>
                     </td>
                     <td>
+                        
                         <input name="editissue-Priority" id="edp1radio" type="radio" value=1 class="crinput">
-                        <label for="P1" >High</label>
+                        <label for="P1" style="color:rgb(226, 28, 28);" ><b>High</b></label>&emsp;
                         <input name="editissue-Priority" id="edp2radio" type="radio" value=2 class="crinput">
-                        <label for="P2" >Medium</label>
+                        <label for="P2" style="color: rgb(231, 160, 28);" ><b>Medium</b></label>&emsp;
                         <input name="editissue-Priority" id="edp3radio" type="radio" value=3 class="crinput">
-                        <label for="P3" >Low</label>
+                        <label for="P3" style="color: rgb(49, 151, 235);"><b>Low</b></label>
+
                     </td>
                 </tr>
                 <tr>
@@ -123,30 +128,53 @@
                          <label for="ed-issue-labels">Issue Label:</label>
                     </td>
                     <td>
-                        <input name="ed-issue-labels" id="ed-issue-labels" type="text" placeholder="" class="crinput">
-                        <div class="suggested-labels">
+                        <input name="ed-issue-labels" id="ed-issue-labels" type="text" placeholder="Add Label Here" class="crinput">
+                        <input type="color" id="ed-color-picker" name="cr-color-picker" class="color-picker cr">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="ed-issue-labels"><b>OR</b>&nbsp;Choose From Existing Labels:</label>
+                    </td>
+                    <td>
+                        <div class="ed-suggested-labels">
                             
                         </div>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <button id="btnUpdateEDIssue" class="btnsubmitModal">Update Issue</button>
+        <div class="modal-bottom">
+            <button id="btnUpdateEDIssue" class="btnsubmitModal">Update Issue</button>
+
+        </div>
       </div>
      
     </div>
   
   </div>
+
     <div class="header">
         <input id="board-name" name="board-name" placeholder="Enter Your Board Name"></input>
         <button id="create-issue" type="button"><i class="fa-solid fa-square-plus"></i>&nbsp;&nbsp;Create New Issue</button>
-        <span>
+        
+    </div>
+    <div class="boardControls">
+        <div>
             <label for="sortpriority">Sort Priority :</label>
             <select name="sortpriority" id="sortpriority">
                 <option value="HTL">High to Low</option>
                 <option value="LTH">Low to High</option>
             </select>
-        </span>
+        </div>
+        <div>
+            <span>Filter By Labels :</span>
+            <div class="main-suggested-labels">
+                <span id="main-all-label" class="issue-label sg" style="background-color: rgb(53, 53, 53);">all</span>
+            </div>
+        </div>
+
     </div>
     <div class="container">
         <!-- <div id="todo-board" class="board">
