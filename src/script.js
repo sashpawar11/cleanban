@@ -129,7 +129,6 @@ colorPickerBoard.forEach((picker) => {
     // picker.addEventListener('input', () => {
     //     console.log('inputted');
     // });
-
     picker.addEventListener('change', updateBoardColor);
 
     // picker.addEventListener('change', () => {
@@ -391,7 +390,7 @@ function updateBoardColor(event) {
     const boardID = board.id;
     const boardTitle = board.querySelector('.board-title');
     boardTitle.style.color = colorSelected;
-    board.style.borderColor = colorSelected;
+    //board.style.borderColor = colorSelected;
     console.log('Insired updateBoardColor', boardsData);
     boardsData.forEach((board) => {
         if (board.boardID == boardID) {
@@ -480,7 +479,7 @@ function DOMCreateBoardElement(board) {
     let boardDiv = document.createElement('div');
     boardDiv.id = board.boardID;
     boardDiv.className = "board"
-    boardDiv.style.borderColor =  board.boardColor;
+    //boardDiv.style.borderColor =  board.boardColor;
 
     const boardHeader = document.createElement('div');
     boardHeader.className = "board-header";
@@ -599,7 +598,7 @@ function filterLabels(labelName) {
     let issues = document.querySelectorAll('.issue-item');
     
     issues.forEach((issue) => {
-        issue.style.display = 'block';
+        issue.style.display = 'flex';
         let tempLabel = issue.querySelector('.issue-label')
         if (tempLabel.innerHTML !== labelName) {
             issue.style.display = 'none';
@@ -616,16 +615,16 @@ function syncLabels(labelObj) {
         issueLabels.push(labelObj); 
         return;
     } 
-    
+    let foundExistingLabel = false;
     issueLabels.forEach(issue => {
         if (issue.issueLabelName == labelObj.issueLabelName) {
-            return
-        }
-        else {
-            issueLabels.push(labelObj);
+            foundExistingLabel = true;
         }
     })
 
+    if(!foundExistingLabel){
+        issueLabels.push(labelObj);
+    }
     console.log(`Issue labels ${issueLabels.toString()}`);
     syncLocalStorage();
 

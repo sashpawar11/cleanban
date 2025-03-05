@@ -67,7 +67,7 @@
                         <label for="cr-issue-labels"><b>OR</b>&nbsp;Choose From Existing Labels:</label>
                     </td>
                     <td>
-                        <div class="cr-suggested-labels">
+                        <div class="cr-suggested-labels suggested-labels">
                             
                         </div>
                     </td>
@@ -138,7 +138,7 @@
                         <label for="ed-issue-labels"><b>OR</b>&nbsp;Choose From Existing Labels:</label>
                     </td>
                     <td>
-                        <div class="ed-suggested-labels">
+                        <div class="ed-suggested-labels suggested-labels">
                             
                         </div>
                     </td>
@@ -162,13 +162,13 @@
     </div>
     <div class="boardControls">
         <div>
-            <label for="sortpriority">Sort Priority :</label>
+            <label for="sortpriority">Sort By Priority :</label>
             <select name="sortpriority" id="sortpriority">
                 <option value="HTL">High to Low</option>
                 <option value="LTH">Low to High</option>
             </select>
         </div>
-        <div>
+        <div style="display: flex; flex-direction: row;">
             <span>Filter By Labels :</span>
             <div class="main-suggested-labels">
                 <span id="main-all-label" class="issue-label sg" style="background-color: rgb(53, 53, 53);">all</span>
