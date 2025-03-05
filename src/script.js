@@ -121,7 +121,7 @@ boards.forEach((board) => {
         }
     })
     board.addEventListener('dragenter', () => {
-        console.log(board);
+        //console.log(board);
         board.classList.add('board-drag-active');
     })
     board.addEventListener('dragleave', () => {
@@ -212,7 +212,7 @@ btncreateIssueModalClose.onclick = function() {
 }
 
 function execIssueCrud(event) {
-    console.log('triggered issuecrud')
+    //console.log('triggered issuecrud')
     const currBoard = event.target.parentNode.parentNode.parentNode.parentElement;
     // while (currBoardID.className != 'board') {
     //     currBoardID.parentNode;
@@ -279,7 +279,7 @@ function editIssueMode(editBoardID, editIssueID) {
     let formattedDate = tempDate.toISOString().split('T')[0];
     edIssueDate.value = formattedDate
    
-    console.log(issueObj);
+    //console.log(issueObj);
     edIssueLabelName.value = issueObj.issueLabel.issueLabelName;
     edIssueLabelColor.value = issueObj.issueLabel.issueLabelColor;
 
@@ -365,7 +365,7 @@ function createNewIssue() {
     
     const newIssue = new IssueObj(Math.ceil(Math.random() * 1000000), selectedPriority, crIssueName, 
     crIssueLabelName, crIssueLabelColor,crIssueDate);
-    //console.log(newIssue);
+    ////console.log(newIssue);
     boardsData[0].boardIssues.push(newIssue);
     syncLocalStorage();
     btncreateIssueModalClose.click();
@@ -393,11 +393,11 @@ function updateBoardColor(event) {
     const boardTitle = board.querySelector('.board-title');
     boardTitle.style.color = colorSelected;
     //board.style.borderColor = colorSelected;
-    console.log('Insired updateBoardColor', boardsData);
+    //console.log('Insired updateBoardColor', boardsData);
     boardsData.forEach((board) => {
         if (board.boardID == boardID) {
             board.boardColor = colorSelected;
-            console.log('boardsData Updated!');
+            //console.log('boardsData Updated!');
         }
     })
 
@@ -433,7 +433,7 @@ function loadBoardsDataFromStorage() {
         retrievedData = JSON.parse(localStorage.getItem('boardsData')); 
         boardsData = retrievedData;
         // boardsData = [...loadedBoardData];
-        console.log('Data Loaded Successfully!',boardsData);
+        //console.log('Data Loaded Successfully!',boardsData);
     };
 }
 
@@ -445,12 +445,12 @@ function syncLocalStorage() {
     //SYNC BOARD FILTERS
     if (sortpriority.value.length > 0 ) localStorage.setItem('sort-priority', sortpriority.value);
 
-    console.log(issueLabels);
+    //console.log(issueLabels);
     const parsedLabels = JSON.stringify(issueLabels);
     if (issueLabels.length > 0) {
         localStorage.setItem('issue-labels', parsedLabels);
     }
-    console.log('Synced Data! ', JSON.parse(localStorage.getItem('boardsData')));
+    //console.log('Synced Data! ', JSON.parse(localStorage.getItem('boardsData')));
 }
 
 function renderBoardData() {
@@ -480,7 +480,7 @@ function repositionBottomControl(board,control) {
 
 function DOMCreateBoardElement(board) {
 
-    console.log('insidedomcreateboardelement');
+    //console.log('insidedomcreateboardelement');
 
     // boardElement
     let boardDiv = document.createElement('div');
@@ -528,7 +528,7 @@ function DOMCreateBoardElement(board) {
     boardHeader.appendChild(totalIssuesSpan);
 
     boardDiv.appendChild(boardHeader);
-    console.log(boardDiv);
+    //console.log(boardDiv);
     boardDiv = DOMCreateIssuesElement(boardDiv,board.boardIssues)
 
     const boardBottomControlDiv = document.createElement('div');
@@ -630,7 +630,7 @@ if (boardDiv.id == 'todo-board') itemsContainer.id = 'todo-items';
     boardDiv.appendChild(itemsContainer);
 
 
-    console.log('FinalBoard',boardDiv);
+    //console.log('FinalBoard',boardDiv);
     return boardDiv;
 
 }
@@ -669,7 +669,7 @@ function filterLabels(labelName) {
 
 
 function syncLabels(labelObj) {
-    console.log(labelObj);
+    //console.log(labelObj);
 
     if (issueLabels.length == 0) {
         issueLabels.push(labelObj); 
@@ -685,7 +685,7 @@ function syncLabels(labelObj) {
     if(!foundExistingLabel){
         issueLabels.push(labelObj);
     }
-    console.log(`Issue labels ${issueLabels.toString()}`);
+    //console.log(`Issue labels ${issueLabels.toString()}`);
     syncLocalStorage();
 
 }
