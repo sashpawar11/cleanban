@@ -38,6 +38,8 @@ const issueItems = document.querySelectorAll('.issue-item')
 const kanbanBoardName = document.getElementById('board-name');
 const btnCreateIssue = document.getElementById('create-issue');
 const btnExportBoard = document.getElementById('export-board');
+const btnImportBoard = document.getElementById('import-board');
+const inputJSON = document.getElementById('importJSON');
 const btnCreateBoard = document.getElementById('btn-addboard');
 const createIssueModal = document.getElementById("createIssueModal");
 const editIssueModal = document.getElementById("editIssueModal");
@@ -47,6 +49,7 @@ const btneditIssueModalClose = document.getElementById("closeEditIssueModalButto
 const btneditIssueModalSubmit = document.getElementById("btnUpdateEDIssue");
 const sortpriority = document.getElementById('sortpriority');
 const allLabelFilter = document.getElementById('main-all-label');
+
 
 let boardsData = [];
 let issueLabels = [];
@@ -98,11 +101,14 @@ sortpriority.addEventListener('change', () => {
 const boards = document.querySelectorAll('.board');
 boards.forEach((board) => {
     board.addEventListener('dragover', () => {
-        
-        //console.log('Something Dragged Over Me :' , board);
+
         const issueItem = document.querySelector('.flying');
+        const boardBottomControl = board.querySelector('.boardbottomcontrol');
+
+        board.removeChild(boardBottomControl); // reposition delbutton
         board.appendChild(issueItem);
-        
+        board.appendChild(boardBottomControl); // reposition delbutton
+
 
         // SYNC LOCALSTORAGE
         for (let i = 0; i < boardsData.length; i++){
@@ -126,14 +132,7 @@ boards.forEach((board) => {
 const colorPickerBoard = document.querySelectorAll('.vBoard');
 colorPickerBoard.forEach((picker) => {
     picker.addEventListener('input', updateBoardColor);
-    // picker.addEventListener('input', () => {
-    //     console.log('inputted');
-    // });
     picker.addEventListener('change', updateBoardColor);
-
-    // picker.addEventListener('change', () => {
-    //     console.log('changed');
-    // });
 
 })
 
@@ -151,12 +150,6 @@ btncreateIssueModalSubmit.onclick = function() {
     createNewIssue();
 }
 
-// When the user clicks anywhere outside of the modal, close it
-// window.onclick = function (event) {
-//     if (event.target == createIssueModal) {
-//         modal.style.display = "none";
-//     }
-// }
 
 const itemCrudBtns = document.querySelectorAll('.issue-buttons')
 itemCrudBtns.forEach(item => {
@@ -181,7 +174,7 @@ function attachDragHandlers(target) {
     });
 
 }
-// When the user clicks on the button, open the modal
+
 btnCreateIssue.onclick = function() {
     createIssueModal.style.display = "block";
     renderIssueLabelChips("Create");
@@ -190,8 +183,29 @@ btnCreateIssue.onclick = function() {
 btnExportBoard.onclick = function() {
     ExportBoardBackupJSON();
 }
+btnImportBoard.onclick = function () {
+    inputJSON.click();
+}
 
-// When the user clicks on <span> (x), close the modal
+inputJSON.addEventListener('change', (event) => {
+    
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        try {
+            Object.entries(JSON.parse(e.target.result)).forEach(([k, v]) => localStorage.setItem(k, v))
+            alert("Board Imported successfully!");
+            parent.location.reload();
+        } catch (error) {
+            alert(`Board Import Failed! Error : ${error}`);
+        }
+    }
+    reader.readAsText(file);
+})
+   
+
 btncreateIssueModalClose.onclick = function() {
     createIssueModal.style.display = "none";
     parent.location.reload();
@@ -279,7 +293,7 @@ function editIssueMode(editBoardID, editIssueID) {
         issueObj.issueDueDate = edIssueDate.value;
         issueObj.issueLabel.issueLabelName = edIssueLabelName.value;
         issueObj.issueLabel.issueLabelColor = edIssueLabelColor.value;
-
+        syncLabels(issueObj.issueLabel);
         boardsData.forEach(board => {
             if (board.boardID == editBoardID) {
     
@@ -323,7 +337,6 @@ function deleteIssue(delBoardID, delIssueID) {
 
 }
 function createNewIssue() {
-    const todoItems = document.getElementById('todo-items');
     // Inputs
     const crIssueName = document.getElementById('cr-issue-name').value;
     const crIssueP1 = document.getElementById('p1radio').checked;
@@ -361,28 +374,13 @@ function createNewIssue() {
 
 
 function createNewBoard() {
-    const randBoardID = Math.random() * 1000000;
-    
-    const boardDiv = document.createElement('div');
-    boardDiv.className = 'board';
-    boardDiv.id = randBoardID;
-    const boardName = document.createElement('h1');
-    boardName.innerHTML = 'Your Board';
-    boardDiv.appendChild(boardName);
-    boardDiv.addEventListener('dragover', () => {
-        console.log('Something Dragged');
-        const issueItem = document.querySelector('.flying');
-        boardDiv.appendChild(issueItem);
-    })
-    boardsContainer.appendChild(boardDiv); 
-    repositionAdHocBoard();
+    const randBoardID = Math.ceil(Math.random() * 1000000);
 
-    // sync
-    const tempBoardObj = new boardObj(randBoardID, boardName.innerHTML, 'black');
+    // create mockBoard and sync
+    const tempBoardObj = new boardObj(randBoardID, 'Your Board', 'black');
     boardsData.push(tempBoardObj);
     syncLocalStorage();
     parent.location.reload();
-
 }
 
 
@@ -475,6 +473,11 @@ function repositionAdHocBoard() {
     boardsContainer.appendChild(adhocBoard);
 }
 
+function repositionBottomControl(board,control) {
+    board.removeChild(control);
+    board.appendChild(control);
+}
+
 function DOMCreateBoardElement(board) {
 
     console.log('insidedomcreateboardelement');
@@ -487,21 +490,71 @@ function DOMCreateBoardElement(board) {
 
     const boardHeader = document.createElement('div');
     boardHeader.className = "board-header";
-    const boardTitleSpan = document.createElement('span');
-    boardTitleSpan.innerHTML = board.boardName
-    boardTitleSpan.className = 'board-title';
-    boardTitleSpan.style.color = board.boardColor;
+    // const boardTitleSpan = document.createElement('span');
+    // boardTitleSpan.innerHTML = board.boardName
+    // boardTitleSpan.className = 'board-title';
+    // boardTitleSpan.style.color = board.boardColor;
+
+    const boardTitleInput = document.createElement('input');
+    boardTitleInput.value = board.boardName
+    boardTitleInput.name = 'board-title';
+    boardTitleInput.className = 'board-title';
+    boardTitleInput.width = 100;
+    boardTitleInput.style.color = board.boardColor;
+
+
+    boardTitleInput.addEventListener('change', () => {
+        board.boardName = boardTitleInput.value;
+        const boardIndex = boardsData.indexOf(board);
+        boardsData[boardIndex] = board;
+        syncLocalStorage()
+    })
     const colorPicker = document.createElement('input');
     colorPicker.type = 'color';
     colorPicker.name = 'board-color-picker'
     colorPicker.className = 'c vBoard'
     colorPicker.value = board.boardColor;
-    boardHeader.appendChild(boardTitleSpan);
+
+    const totalIssuesSpan = document.createElement('span')
+    totalIssuesSpan.id = `${board.boardID}-totalIssueCount`
+    totalIssuesSpan.className = 'totalIssueCount'
+
+    totalIssuesSpan.innerText = `Total Issues : ${board.boardIssues.length}`
+
+    //boardHeader.appendChild(boardTitleSpan);
+    boardHeader.appendChild(boardTitleInput);
+
     boardHeader.appendChild(colorPicker);
+    boardHeader.appendChild(totalIssuesSpan);
+
     boardDiv.appendChild(boardHeader);
     console.log(boardDiv);
     boardDiv = DOMCreateIssuesElement(boardDiv,board.boardIssues)
 
+    const boardBottomControlDiv = document.createElement('div');
+    boardBottomControlDiv.className = 'boardbottomcontrol'
+
+    const deleteBoardBtn = document.createElement('button');
+    deleteBoardBtn.className = 'btnboardDelete'
+    deleteBoardBtn.innerHTML = '-DELETE BOARD-'
+    boardBottomControlDiv.append(deleteBoardBtn);
+
+    deleteBoardBtn.addEventListener('click', () => {
+        
+        const delBoardIdx = boardsData.indexOf(board);
+
+        let isItems = false;
+        if (boardsData[delBoardIdx].boardIssues.length > 0) {
+            isItems = confirm('The board has items on it, are you sure you want to delete it?')
+        }
+        if (isItems || boardsData[delBoardIdx].boardIssues.length == 0) {
+            boardsData.splice(delBoardIdx, 1)
+            syncLocalStorage();
+            parent.location.reload();
+        }
+
+    })
+    boardDiv.appendChild(boardBottomControlDiv);
     return boardDiv
 
 }
@@ -509,7 +562,7 @@ function DOMCreateBoardElement(board) {
 function DOMCreateIssuesElement(boardDiv, issues) {
     
 const itemsContainer = document.createElement('div');
-itemsContainer.class = 'items';
+itemsContainer.className = 'board-items';
 if (boardDiv.id == 'todo-board') itemsContainer.id = 'todo-items';
 
     issues.forEach((issue) => {
@@ -573,7 +626,10 @@ if (boardDiv.id == 'todo-board') itemsContainer.id = 'todo-items';
         itemsContainer.appendChild(issueItemDiv);
     })
 
+  
     boardDiv.appendChild(itemsContainer);
+
+
     console.log('FinalBoard',boardDiv);
     return boardDiv;
 
@@ -636,12 +692,18 @@ function syncLabels(labelObj) {
 
 function moveIssueToBoard(idxSourceBoard, idxSourceIssue, targetBoardID) {
     
+    const sourceBoardID = boardsData[idxSourceBoard].boardID;
+    const sourceBoardTotalIssues = boardsData[idxSourceBoard].boardIssues.length;
+    
     boardsData.forEach(board => {
         
         if (board.boardID == targetBoardID) {
             
             board.boardIssues.push(boardsData[idxSourceBoard].boardIssues[idxSourceIssue]);
             boardsData[idxSourceBoard].boardIssues.splice(idxSourceIssue, 1)
+
+            
+            updateTotalIssueCount(sourceBoardID,sourceBoardTotalIssues,board.boardID, board.boardIssues.length);
             syncLocalStorage();
             return;
         }
@@ -708,17 +770,20 @@ function renderIssueLabelChips(mode) {
 
 // UTILTIY FUNCTIONS
 
-const componentToHex = (c) => {
-    const hex = c.toString(16);
-    return hex.length == 1 ? "0" + hex : hex;
-  }
-  
-  const rgbToHex = (r, g, b) => {
-    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-  }
 
 function clearLocalStorage() {
     localStorage.clear();
+}
+
+function updateTotalIssueCount(sourceBoardID, sourceBoardIssueCount, targetBoardID, targetBoadissueCount) {
+    
+    let updatedSourceCount = sourceBoardIssueCount - 1;
+    const targettotalIssueCountElement = document.getElementById(`${targetBoardID}-totalIssueCount`)
+    targettotalIssueCountElement.innerText = `Total Issues - ${targetBoadissueCount}`
+
+    const sourceBoardTotalIssueCountElement = document.getElementById(`${sourceBoardID}-totalIssueCount`)
+    sourceBoardTotalIssueCountElement.innerText = `Total Issues - ${updatedSourceCount}`
+
 }
 
 function ExportBoardBackupJSON(){
@@ -749,16 +814,5 @@ function ImportBoardBackup(){
     a.download = `${filename}.json`;
     a.click();
     URL.revokeObjectURL(url);
-    // copy(`Object.entries(${JSON.stringify(localStorage)})
-    // .forEach(([k,v])=>localStorage.setItem(k,v))`)
+
 };
-// // boardObj
-// board {
-//     boardName:
-//     items: [{
-//         issueName:
-//         priority :
-//         estdDueDate:
-//         label:
-//     }, {}, {}]
-// }

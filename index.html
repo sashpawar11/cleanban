@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CleanBan - your simple Kanban Solution</title>
+    <link rel="icon" type="image/x-icon" href="/src/favicon.ico">
     <script src="https://kit.fontawesome.com/345deea68e.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./src/style.css" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
@@ -157,8 +158,17 @@
 
     <div class="header">
         <input id="board-name" name="board-name" placeholder="Enter Your Board Name"></input>
-        <button id="create-issue" class="header-buttons" type="button"><i class="fa-solid fa-square-plus"></i>&nbsp;&nbsp;Create New Issue</button>
-        <button id="export-board" class="header-buttons" type="button"><i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;Export Board</button>
+        <div class="headerbuttons">
+            <button id="create-issue" class="header-buttons" type="button"><i class="fa-solid fa-square-plus"></i>&nbsp;&nbsp;Create New Issue</button>
+            <button id="export-board" class="header-buttons" type="button"><i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;Export Board</button>
+            <button id="import-board" class="header-buttons" type="button"><i class="fa-solid fa-file-import"></i>&nbsp;&nbsp;Import Board
+            <input id="importJSON" type="file" accept=".json" >
+            </button>
+        </div>
+    </div>
+    <div class="fakeheader">
+       
+     
     </div>
     <div class="boardControls">
         <div>
@@ -234,12 +244,10 @@
 
 
 
-<!-- 
     <footer>
-        <p>Designed with <3 by: Saish Pawar</p>
-        <p><a href="mailto:hege@example.com">hege@example.com</a></p>
-      </footer>
- -->
+        <p>CleanBan - Designed with ❤ by Saish Pawar</p>
+    </footer>
+
 
 
 
