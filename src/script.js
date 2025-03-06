@@ -80,6 +80,8 @@ if (boardsData.length == 0) {
 renderBoardData()
 renderIssueLabelChips("Main");
 
+toggleDarkModeOnLoad();
+
 
 /// EVENT HANDLERS ///////////
 allLabelFilter.addEventListener('click', () => {
@@ -433,8 +435,6 @@ function loadLocales() {
     else {
         isDarkMode = false;
     }
-
-    toggleDarkModeOnLoad();
 
     loadBoardsDataFromStorage()
 
