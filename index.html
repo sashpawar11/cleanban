@@ -7,8 +7,6 @@
     <link rel="icon" type="image/x-icon" href="/src/favicon.ico">
     <script src="https://kit.fontawesome.com/345deea68e.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./src/style.css" type="text/css">
-    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -59,8 +57,10 @@
                          <label for="cr-issue-labels">Add Issue Label:</label>
                     </td>
                     <td>
-                        <input id="cr-issue-labels" name="cr-issue-labels" class="cr-issue-labels" type="text" placeholder="Add Label Here" class="crinput">
-                        <input type="color" id="cr-color-picker" name="cr-color-picker" class="color-picker cr">
+                        <div style="display: flex; flex-direction: row; align-items: center; justify-items: center; gap: 10px;">
+                            <input id="cr-issue-labels" name="cr-issue-labels" class="cr-issue-labels" type="text" placeholder="Add Label Here" class="crinput">
+                            <input type="color" id="cr-color-picker" name="cr-color-picker" class="color-picker cr">
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -129,8 +129,9 @@
                          <label for="ed-issue-labels">Issue Label:</label>
                     </td>
                     <td>
-                        <input name="ed-issue-labels" id="ed-issue-labels" type="text" placeholder="Add Label Here" class="crinput">
-                        <input type="color" id="ed-color-picker" name="cr-color-picker" class="color-picker cr">
+                        <div style="display: flex; flex-direction: row; align-items: center; justify-items: center; gap: 10px;">
+                            <input name="ed-issue-labels" id="ed-issue-labels" type="text" placeholder="Add Label Here" class="crinput">
+                            <input type="color" id="ed-color-picker" name="cr-color-picker" class="color-picker cr">
                         </div>
                     </td>
                 </tr>
@@ -159,6 +160,7 @@
         <div class="header">
             <input id="board-name" name="board-name" placeholder="Enter Your Board Name"></input>
             <div class="headerbuttons">
+                <button id="darkmode-toggle" class="header-buttons" type="button"><i class="fa-solid fa-moon"></i></button>
                 <button id="create-issue" class="header-buttons" type="button"><i class="fa-solid fa-square-plus"></i>&nbsp;&nbsp;Create New Issue</button>
                 <button id="export-board" class="header-buttons" type="button"><i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;Export Board</button>
                 <button id="import-board" class="header-buttons" type="button"><i class="fa-solid fa-file-import"></i>&nbsp;&nbsp;Import Board
@@ -185,7 +187,7 @@
     
         </div>
         <div class="container">
-            <div id="adhoc-board"><button id="btn-addboard"><i class="fa-solid fa-square-plus"></i></button></div>
+            <div id="adhoc-board"><i id="btn-addboard" class="fa-solid fa-square-plus"></i></div>
         </div>
     
     

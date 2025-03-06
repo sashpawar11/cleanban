@@ -49,11 +49,11 @@ const btneditIssueModalClose = document.getElementById("closeEditIssueModalButto
 const btneditIssueModalSubmit = document.getElementById("btnUpdateEDIssue");
 const sortpriority = document.getElementById('sortpriority');
 const allLabelFilter = document.getElementById('main-all-label');
-
+const btnDarkModeToggle = document.getElementById('darkmode-toggle');
 
 let boardsData = [];
 let issueLabels = [];
-
+let isDarkMode = false;
 
 loadLocales();
 // fallback/new session
@@ -185,6 +185,10 @@ btnExportBoard.onclick = function() {
 }
 btnImportBoard.onclick = function () {
     inputJSON.click();
+}
+
+btnDarkModeToggle.onclick = function () {
+    toggleDarkMode()
 }
 
 inputJSON.addEventListener('change', (event) => {
@@ -422,6 +426,16 @@ function loadLocales() {
         issueLabels = JSON.parse(labelsFetch)
     }
 
+    let fetchDarkMode = localStorage.getItem('isDarkMode');
+    if (fetchDarkMode == 'true') {
+        isDarkMode = true
+    }
+    else {
+        isDarkMode = false;
+    }
+
+    toggleDarkModeOnLoad();
+
     loadBoardsDataFromStorage()
 
 
@@ -445,6 +459,7 @@ function syncLocalStorage() {
     //SYNC BOARD FILTERS
     if (sortpriority.value.length > 0 ) localStorage.setItem('sort-priority', sortpriority.value);
 
+    localStorage.setItem('isDarkMode', isDarkMode);
     //console.log(issueLabels);
     const parsedLabels = JSON.stringify(issueLabels);
     if (issueLabels.length > 0) {
@@ -740,6 +755,10 @@ function renderIssueLabelChips(mode) {
                 item.classList.remove('labelSelected');
             })
             labelSpan.classList.add('labelSelected');
+            if (isDarkMode) {
+                labelSpan.classList.add('dark');
+            }
+     
 
             let crIssueLabelName = document.getElementById('cr-issue-labels');
             let crIssueLabelColor = document.getElementById('cr-color-picker');
@@ -768,6 +787,100 @@ function renderIssueLabelChips(mode) {
 
 }
 
+function toggleDarkMode() {
+    
+    const boards = document.querySelectorAll('.board');
+    let tempflag = false;
+
+
+    if (!isDarkMode) {
+        //change body:
+        btnDarkModeToggle.querySelector('.fa-moon').classList.replace('fa-moon', 'fa-sun');
+            
+        document.body.style.backgroundColor = '#0a0a0a';
+        document.querySelector('.boardControls').style.color = '#e4e4e4';
+        adhocBoard.style.backgroundColor = '#0c0c0c'
+        adhocBoard.style.borderColor = '#222222';
+        adhocBoard.style.boxShadow = 'none';
+        btnCreateBoard.style.color = '#e4e4e4'
+        btnCreateBoard.onmouseover = function () {
+              btnCreateBoard.style.color = 'blueviolet'
+        }
+        btnCreateBoard.onmouseleave = function () {
+            btnCreateBoard.style.color = '#e4e4e4'
+      }
+
+        //boardStyling
+        boards.forEach((board) => {
+            board.style.backgroundColor = '#0c0c0c';
+            board.style.borderColor = '#222222';
+            board.style.boxShadow = 'none';
+
+
+            board.querySelector(`.totalIssueCount`).style.color = '#8b8b8b';
+
+            board.querySelectorAll('.issue-item').forEach(item => {
+                item.style.backgroundColor = '#1f1f1f';
+                item.style.borderColor = '#6d6d6d';
+                item.style.color = '#e4e4e4';
+            })
+        })
+        document.querySelectorAll('.modal-content').forEach(modal => { modal.style.backgroundColor = '#313131'; modal.style.color = '#e4e4e4' });
+        isDarkMode = true;
+        syncLocalStorage();
+        //loadLocales();
+    }
+    else {
+        btnDarkModeToggle.querySelector('.fa-sun').classList.replace('fa-sun', 'fa-moon');
+        isDarkMode = false;
+        syncLocalStorage();
+        parent.location.reload();
+    }
+}
+
+function toggleDarkModeOnLoad() {
+    
+    const boards = document.querySelectorAll('.board');
+    if (isDarkMode) {
+        //change body:
+        btnDarkModeToggle.querySelector('.fa-moon').classList.replace('fa-moon', 'fa-sun');
+        document.body.style.backgroundColor = '#0a0a0a';
+        document.querySelector('.boardControls').style.color = '#e4e4e4';
+        adhocBoard.style.backgroundColor = '#0c0c0c'
+        adhocBoard.style.borderColor = '#222222';
+        adhocBoard.style.boxShadow = 'none';
+        btnCreateBoard.style.color = '#e4e4e4'
+        btnCreateBoard.onmouseover = function () {
+              btnCreateBoard.style.color = 'blueviolet'
+        }
+        btnCreateBoard.onmouseleave = function () {
+            btnCreateBoard.style.color = '#e4e4e4'
+      }
+
+        //boardStyling
+        boards.forEach((board) => {
+            board.style.backgroundColor = '#0c0c0c';
+            board.style.borderColor = '#222222';
+            board.style.boxShadow = 'none';
+
+
+            board.querySelector(`.totalIssueCount`).style.color = '#8b8b8b';
+
+            board.querySelectorAll('.issue-item').forEach(item => {
+                item.style.backgroundColor = '#1f1f1f';
+                item.style.borderColor = '#6d6d6d';
+                item.style.color = '#e4e4e4';
+            })
+        })
+        document.querySelectorAll('.modal-content').forEach(modal => { modal.style.backgroundColor = '#313131'; modal.style.color = '#e4e4e4' });
+        isDarkMode = true;
+        syncLocalStorage();
+        //loadLocales();
+    }
+    else {
+        return;
+    }
+}
 // UTILTIY FUNCTIONS
 
 
