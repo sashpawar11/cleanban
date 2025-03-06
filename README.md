@@ -5,10 +5,12 @@
 
 ## Features
 - Create | Update | Delete Issues
+- Set Unique Labels for your Issues!
+- Add | Update | Delete Boards
 - Sort Issues By Priority
 - Sort Issues By Labels
-- Export | Import Kanban Boards
-- LocalStorage Sync
-- Personalised Color for boards
-- Add Personalised Labels to Issues
-- Add Personalised Names to Boards
+- Export | Import Kanban Boards - Share your board with anyone!
+- Dark Mode Toggle
+- Personalized Color for boards
+- Personalized Names to Boards
+- Local Storage Sync
