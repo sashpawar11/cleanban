@@ -10,25 +10,21 @@ body {
     background-color: #fdfdfd;
     width: 100%;
 }
-
+.wrappercontainer{
+    position: relative;
+    width: 100%;
+}
 .header {
     position: relative;
-    z-index: 20;
+    z-index: 1;
     display: flex;
     flex-direction: row;
+    width: 100%;
     padding: 8px 20px;
     background-color: black;
 
 }
-.fakeHeader {
-    position: absolute;
-    z-index: 2;
 
-    padding: 8px 20px;
-    width: 100%;
-    height: 500px;
-
-}
 .headerbuttons{
     margin-left: auto;
 }
@@ -149,7 +145,8 @@ input[id=board-name]{
 }
 .container {
     display: flex;
-    width: max-content;
+    white-space: nowrap;
+    min-width: 100vw;
     gap: 10px;
     padding-bottom: 20px;
     overflow-x: auto;

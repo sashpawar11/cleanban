@@ -155,101 +155,46 @@
     </div>
   
   </div>
-
-    <div class="header">
-        <input id="board-name" name="board-name" placeholder="Enter Your Board Name"></input>
-        <div class="headerbuttons">
-            <button id="create-issue" class="header-buttons" type="button"><i class="fa-solid fa-square-plus"></i>&nbsp;&nbsp;Create New Issue</button>
-            <button id="export-board" class="header-buttons" type="button"><i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;Export Board</button>
-            <button id="import-board" class="header-buttons" type="button"><i class="fa-solid fa-file-import"></i>&nbsp;&nbsp;Import Board
-            <input id="importJSON" type="file" accept=".json" >
-            </button>
-        </div>
-    </div>
-    <div class="fakeheader">
-       
-     
-    </div>
-    <div class="boardControls">
-        <div>
-            <label for="sortpriority">Sort By Priority :</label>
-            <select name="sortpriority" id="sortpriority">
-                <option value="HTL">High to Low</option>
-                <option value="LTH">Low to High</option>
-            </select>
-        </div>
-        <div style="display: flex; flex-direction: row;">
-            <span>Filter By Labels :</span>
-            <div class="main-suggested-labels">
-                <span id="main-all-label" class="issue-label sg" style="background-color: rgb(53, 53, 53);">all</span>
+    <div class="wrappercontainer">
+        <div class="header">
+            <input id="board-name" name="board-name" placeholder="Enter Your Board Name"></input>
+            <div class="headerbuttons">
+                <button id="create-issue" class="header-buttons" type="button"><i class="fa-solid fa-square-plus"></i>&nbsp;&nbsp;Create New Issue</button>
+                <button id="export-board" class="header-buttons" type="button"><i class="fa-solid fa-floppy-disk"></i>&nbsp;&nbsp;Export Board</button>
+                <button id="import-board" class="header-buttons" type="button"><i class="fa-solid fa-file-import"></i>&nbsp;&nbsp;Import Board
+                <input id="importJSON" type="file" accept=".json" >
+                </button>
             </div>
+        </div>   
+         
         </div>
-
-    </div>
-    <div class="container">
-        <!-- <div id="todo-board" class="board">
-            <div class="board-header">
-                <span class="board-title">TODO</span>
-                <input type="color" name="board-color-picker" class="board-color-picker">
+        <div class="boardControls">
+            <div>
+                <label for="sortpriority">Sort By Priority :</label>
+                <select name="sortpriority" id="sortpriority">
+                    <option value="HTL">High to Low</option>
+                    <option value="LTH">Low to High</option>
+                </select>
             </div>
-           
-            <div id="todo-items" class="items">
-                <div id="2412414" draggable="true" class="issue-item">
-                    <span class="priority p1"></span>
-                    <p class="issue-content ">
-                        <span class="issue-label">current-sprint</span>
-                        <span class="issue-title">Create Kanban Board</span>
-                        <span class="issue-date">Due Date : 03/05/25</span>
-                    </p>
-                    <div class="issue-buttons">
-                        <i id="edit-issue" class="fa-solid fa-pen-to-square issue-crud"></i>
-                        <i id="delete-issue" class="fa-solid fa-trash issue-crud"></i>
-                    </div>
-                </div>
-                <div draggable="true" class="issue-item">
-                    <span class="priority p2"></span>
-                    <p class="issue-content ">
-                        <span class="issue-label">current-sprint</span>
-                        <span class="issue-title">Add Create Issue</span>
-                        <span class="issue-date">Due Date : 03/05/25</span>
-                    </p>
-                </div>
-                <div draggable="true" class="issue-item">
-                    <span class="priority p3"></span>
-                    <p class="issue-content ">
-                        <span class="issue-label">current-sprint</span>
-                        <span class="issue-title">Improve Design</span>
-                        <span class="issue-date">Due Date : 03/05/25</span>
-                    </p>
+            <div style="display: flex; flex-direction: row;">
+                <span>Filter By Labels :</span>
+                <div class="main-suggested-labels">
+                    <span id="main-all-label" class="issue-label sg" style="background-color: rgb(53, 53, 53);">all</span>
                 </div>
             </div>
-
+    
         </div>
-        <div id="inprogress-board" class="board">  
-            <div class="board-header">
-            <span class="board-title">IN-PROGRESS</span>
-            <input type="color" name="board-color-picker" class="board-color-picker">
-            </div>
-            <div id="inprogress-items" class="items"></div>
+        <div class="container">
+            <div id="adhoc-board"><button id="btn-addboard"><i class="fa-solid fa-square-plus"></i></button></div>
         </div>
-        <div id="completed-board" class="board">  
-            <div class="board-header">
-            <span class="board-title">COMPLETED</span>
-            <input type="color" name="board-color-picker" class="board-color-picker">
-            </div>
-            <div id="inprogress-items" class="items"></div>
-        </div> -->
-        <div id="adhoc-board"><button id="btn-addboard"><i class="fa-solid fa-square-plus"></i></button></div>
+    
+    
+    
     </div>
-
-
-
+   
     <footer>
         <p>CleanBan - Designed with ❤ by Saish Pawar</p>
     </footer>
-
-
-
 
 
 <script src="src/script.js"></script>
