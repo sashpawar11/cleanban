@@ -92,13 +92,9 @@ kanbanBoardName.addEventListener('input', () => {
 })
 issueItems.forEach(attachDragHandlers);
 
-sortpriority.addEventListener('click', () => {
-    sortIssuesByPriority(sortpriority.value);
-})
 sortpriority.addEventListener('change', () => {
     sortIssuesByPriority(sortpriority.value);
 })
-
 
 const boards = document.querySelectorAll('.board');
 boards.forEach((board) => {
@@ -659,6 +655,9 @@ function sortIssuesByPriority(order) {
         if (order == "LTH") {
             board.boardIssues.sort((a, b) => b.issuePriority - a.issuePriority);
         }
+        else {
+            return;
+        }
        
     })
 
@@ -815,6 +814,10 @@ function toggleDarkMode() {
             board.style.backgroundColor = '#0c0c0c';
             board.style.borderColor = '#222222';
             board.style.boxShadow = 'none';
+            
+            if (board.querySelector('.board-title').style.color == 'rgb(0, 0, 0)') {
+                board.querySelector('.board-title').style.color = 'rgb(255, 255, 255)';
+            }
 
 
             board.querySelector(`.totalIssueCount`).style.color = '#8b8b8b';
@@ -863,6 +866,10 @@ function toggleDarkModeOnLoad() {
             board.style.borderColor = '#222222';
             board.style.boxShadow = 'none';
 
+  
+            if (board.querySelector('.board-title').style.color == 'rgb(0, 0, 0)') {
+                board.querySelector('.board-title').style.color = 'rgb(255, 255, 255)';
+            }
 
             board.querySelector(`.totalIssueCount`).style.color = '#8b8b8b';
 
