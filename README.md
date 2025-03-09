@@ -1,5 +1,5 @@
 
-# [CleanBan](https://cleanban.vercel.app/)
+# [CleanBan](https://cleanban.saishpawar.com/)
 
 - A simple, minimal Kanban board management solution using html,css,vanilla js , completely client-side.
 
