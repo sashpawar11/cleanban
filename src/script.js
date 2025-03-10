@@ -58,7 +58,7 @@ let isDarkMode = false;
 loadLocales();
 // fallback/new session
 if (boardsData.length == 0) {
-    const todoBoardObj = new boardObj('todo-board', 'TODO', '#1a1a1a');
+    const todoBoardObj = new boardObj('todo-board', 'TODO', '#000000');
     const todoBoardObjItem = new IssueObj(Math.ceil(Math.random() * 1000000),1,'Create Kanban Board', 'current-sprint', '#8a2be2',new Date().toLocaleDateString());
     const todoBoardObjItem2 = new IssueObj(Math.ceil(Math.random() * 1000000),2,'Edit and Delete Issue', 'current-sprint', '#8a2be2', new Date().toLocaleDateString())
     const todoBoardObjItem3 = new IssueObj(Math.ceil(Math.random() * 1000000), 3, 'Sync LocalStorage', 'current-sprint','#8a2be2',new Date().toLocaleDateString());
